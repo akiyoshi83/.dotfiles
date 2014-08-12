@@ -217,7 +217,14 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/unite.vim'
 "NeoBundle 'Shougo/vim-vcs'
 "NeoBundle 'Shougo/vimfiler.vim'
-"NeoBundle 'Shougo/vimproc.vim'
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
 "NeoBundle 'Shougo/vimshell.vim'
 "NeoBundle 'Shougo/vinarise.vim'
 
@@ -230,11 +237,278 @@ NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-surround'
 "NeoBundle 'vim-scripts/bufferlist.vim'
+
+" ruby plugins {{{
+NeoBundle 'tpope/vim-rails', { 'autoload' : {
+      \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
+NeoBundle 'vim-scripts/dbext.vim', { 'autoload' : {
+      \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
+NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
+      \ 'autoload' : {
+      \   'insert' : 1,
+      \ }}
+NeoBundleLazy 'edsono/vim-matchit', { 'autoload' : {
+      \ 'filetypes': 'ruby',
+      \ 'mappings' : ['nx', '%'] }}
+NeoBundleLazy 'basyura/unite-rails', {
+      \ 'depends' : 'Shougo/unite.vim',
+      \ 'autoload' : {
+      \   'unite_sources' : [
+      \     'rails/bundle', 'rails/bundled_gem', 'rails/config',
+      \     'rails/controller', 'rails/db', 'rails/destroy', 'rails/features',
+      \     'rails/gem', 'rails/gemfile', 'rails/generate', 'rails/git', 'rails/helper',
+      \     'rails/heroku', 'rails/initializer', 'rails/javascript', 'rails/lib', 'rails/log',
+      \     'rails/mailer', 'rails/model', 'rails/rake', 'rails/route', 'rails/schema', 'rails/spec',
+      \     'rails/stylesheet', 'rails/view'
+      \   ]
+      \ }}
+NeoBundleLazy 'taka84u9/vim-ref-ri', {
+      \ 'depends': ['Shougo/unite.vim', 'thinca/vim-ref'],
+      \ 'autoload': { 'filetypes': ['haml', 'ruby', 'eruby'] } }
+NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+      \ 'depends': 'Shougo/vimproc',
+      \ 'autoload' : {
+      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsBundle']
+      \ }}
+NeoBundleLazy 'tsukkee/unite-tag', {
+      \ 'depends' : ['Shougo/unite.vim'],
+      \ 'autoload' : {
+      \   'unite_sources' : ['tag', 'tag/file', 'tag/include']
+      \ }}
+NeoBundle 'scrooloose/syntastic'
+
+" vim-rails {{{
+let g:rails_default_file='config/database.yml'
+let g:rails_level = 4
+let g:rails_mappings=1
+let g:rails_modelines=0
+" let g:rails_some_option = 1
+" let g:rails_statusline = 1
+" let g:rails_subversion=0
+" let g:rails_syntax = 1
+" let g:rails_url='http://localhost:3000'
+" let g:rails_ctags_arguments='--languages=-javascript'
+" let g:rails_ctags_arguments = ''
+function! SetUpRailsSetting()
+  nnoremap <buffer><Space>r :R<CR>
+  nnoremap <buffer><Space>a :A<CR>
+  nnoremap <buffer><Space>m :Rmodel<Space>
+  nnoremap <buffer><Space>c :Rcontroller<Space>
+  nnoremap <buffer><Space>v :Rview<Space>
+  nnoremap <buffer><Space>p :Rpreview<CR>
+endfunction
+
+aug MyAutoCmd
+  au User Rails call SetUpRailsSetting()
+aug END
+
+aug RailsDictSetting
+  au!
+aug END
+" }}}
+
+" Unite-rails.vim {{{
+function! UniteRailsSetting()
+  nnoremap <buffer><C-H><C-H><C-H>  :<C-U>Unite rails/view<CR>
+  nnoremap <buffer><C-H><C-H>       :<C-U>Unite rails/model<CR>
+  nnoremap <buffer><C-H>            :<C-U>Unite rails/controller<CR>
+
+  nnoremap <buffer><C-H>c           :<C-U>Unite rails/config<CR>
+  nnoremap <buffer><C-H>s           :<C-U>Unite rails/spec<CR>
+  nnoremap <buffer><C-H>m           :<C-U>Unite rails/db -input=migrate<CR>
+  nnoremap <buffer><C-H>l           :<C-U>Unite rails/lib<CR>
+  nnoremap <buffer><expr><C-H>g     ':e '.b:rails_root.'/Gemfile<CR>'
+  nnoremap <buffer><expr><C-H>r     ':e '.b:rails_root.'/config/routes.rb<CR>'
+  nnoremap <buffer><expr><C-H>se    ':e '.b:rails_root.'/db/seeds.rb<CR>'
+  nnoremap <buffer><C-H>ra          :<C-U>Unite rails/rake<CR>
+  nnoremap <buffer><C-H>h           :<C-U>Unite rails/heroku<CR>
+endfunction
+aug MyAutoCmd
+  au User Rails call UniteRailsSetting()
+aug END
+" }}}
+
+" vim-ref {{{
+let g:ref_open                    = 'split'
+let g:ref_refe_cmd                = expand('~/.vim/ref/ruby-ref2.1.2/refe-2_1_2')
+
+nnoremap rr :<C-U>Unite ref/refe     -default-action=split -input=
+nnoremap ri :<C-U>Unite ref/ri       -default-action=split -input=
+
+aug MyAutoCmd
+  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>KK :<C-U>Unite -no-start-insert ref/ri   -input=<C-R><C-W><CR>
+  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>K  :<C-U>Unite -no-start-insert ref/refe -input=<C-R><C-W><CR>
+aug END
+" }}}
+
+" endwise.vim {{{
+let g:endwise_no_mappings=1
+" }}}
+
+" matchit {{{
+if !exists('loaded_matchit')
+  runtime macros/matchit.vim
+endif
+" }}}
+
+" switch.vim {{{
+function! s:separate_defenition_to_each_filetypes(ft_dictionary) "{{{
+  let result = {}
+
+  for [filetypes, value] in items(a:ft_dictionary)
+    for ft in split(filetypes, ",")
+      if !has_key(result, ft)
+        let result[ft] = []
+      endif
+
+      call extend(result[ft], copy(value))
+    endfor
+  endfor
+
+  return result
+endfunction"}}}
+
+" ------------------------------------
+" switch.vim
+" ------------------------------------
+nnoremap ! :Switch<CR>
+let s:switch_definition = {
+      \ '*': [
+      \   ['is', 'are']
+      \ ],
+      \ 'ruby,eruby,haml' : [
+      \   ['if', 'unless'],
+      \   ['while', 'until'],
+      \   ['.blank?', '.present?'],
+      \   ['include', 'extend'],
+      \   ['class', 'module'],
+      \   ['.inject', '.delete_if'],
+      \   ['.map', '.map!'],
+      \   ['attr_accessor', 'attr_reader', 'attr_writer'],
+      \ ],
+      \ 'Gemfile,Berksfile' : [
+      \   ['=', '<', '<=', '>', '>=', '~>'],
+      \ ],
+      \ 'ruby.application_template' : [
+      \   ['yes?', 'no?'],
+      \   ['lib', 'initializer', 'file', 'vendor', 'rakefile'],
+      \   ['controller', 'model', 'view', 'migration', 'scaffold'],
+      \ ],
+      \ 'erb,html,php' : [
+      \   { '<!--\([a-zA-Z0-9 /]\+\)--></\(div\|ul\|li\|a\)>' : '</\2><!--\1-->' },
+      \ ],
+      \ 'rails' : [
+      \   [100, ':continue', ':information'],
+      \   [101, ':switching_protocols'],
+      \   [102, ':processing'],
+      \   [200, ':ok', ':success'],
+      \   [201, ':created'],
+      \   [202, ':accepted'],
+      \   [203, ':non_authoritative_information'],
+      \   [204, ':no_content'],
+      \   [205, ':reset_content'],
+      \   [206, ':partial_content'],
+      \   [207, ':multi_status'],
+      \   [208, ':already_reported'],
+      \   [226, ':im_used'],
+      \   [300, ':multiple_choices'],
+      \   [301, ':moved_permanently'],
+      \   [302, ':found'],
+      \   [303, ':see_other'],
+      \   [304, ':not_modified'],
+      \   [305, ':use_proxy'],
+      \   [306, ':reserved'],
+      \   [307, ':temporary_redirect'],
+      \   [308, ':permanent_redirect'],
+      \   [400, ':bad_request'],
+      \   [401, ':unauthorized'],
+      \   [402, ':payment_required'],
+      \   [403, ':forbidden'],
+      \   [404, ':not_found'],
+      \   [405, ':method_not_allowed'],
+      \   [406, ':not_acceptable'],
+      \   [407, ':proxy_authentication_required'],
+      \   [408, ':request_timeout'],
+      \   [409, ':conflict'],
+      \   [410, ':gone'],
+      \   [411, ':length_required'],
+      \   [412, ':precondition_failed'],
+      \   [413, ':request_entity_too_large'],
+      \   [414, ':request_uri_too_long'],
+      \   [415, ':unsupported_media_type'],
+      \   [416, ':requested_range_not_satisfiable'],
+      \   [417, ':expectation_failed'],
+      \   [422, ':unprocessable_entity'],
+      \   [423, ':precondition_required'],
+      \   [424, ':too_many_requests'],
+      \   [426, ':request_header_fields_too_large'],
+      \   [500, ':internal_server_error'],
+      \   [501, ':not_implemented'],
+      \   [502, ':bad_gateway'],
+      \   [503, ':service_unavailable'],
+      \   [504, ':gateway_timeout'],
+      \   [505, ':http_version_not_supported'],
+      \   [506, ':variant_also_negotiates'],
+      \   [507, ':insufficient_storage'],
+      \   [508, ':loop_detected'],
+      \   [510, ':not_extended'],
+      \   [511, ':network_authentication_required'],
+      \ ],
+      \ 'rspec': [
+      \   ['describe', 'context', 'specific', 'example'],
+      \   ['before', 'after'],
+      \   ['be_true', 'be_false'],
+      \   ['get', 'post', 'put', 'delete'],
+      \   ['==', 'eql', 'equal'],
+      \   { '\.should_not': '\.should' },
+      \   ['\.to_not', '\.to'],
+      \   { '\([^. ]\+\)\.should\(_not\|\)': 'expect(\1)\.to\2' },
+      \   { 'expect(\([^. ]\+\))\.to\(_not\|\)': '\1.should\2' },
+      \ ],
+      \ 'markdown' : [
+      \   ['[ ]', '[x]']
+      \ ]
+      \ }
+
+let s:switch_definition = s:separate_defenition_to_each_filetypes(s:switch_definition)
+function! s:define_switch_mappings() "{{{
+  if exists('b:switch_custom_definitions')
+    unlet b:switch_custom_definitions
+  endif
+
+  let dictionary = []
+  for filetype in split(&ft, '\.')
+    if has_key(s:switch_definition, filetype)
+      let dictionary = extend(dictionary, s:switch_definition[filetype])
+    endif
+  endfor
+
+  if exists('b:rails_root')
+    let dictionary = extend(dictionary, s:switch_definition['rails'])
+  endif
+
+  if has_key(s:switch_definition, '*')
+    let dictionary = extend(dictionary, s:switch_definition['*'])
+  endif
+
+  "if !empty('dictionary')
+  "  call alpaca#let_b:('switch_custom_definitions', dictionary)
+  "endif
+endfunction"}}}
+
+augroup SwitchSetting
+  autocmd!
+  autocmd Filetype * if !empty(split(&ft, '\.')) | call <SID>define_switch_mappings() | endif
+augroup END
+" }}}
+
+" }}} ruby plugins
 
 if executable('ctags')
     NeoBundle 'vim-scripts/taglist.vim'
@@ -277,6 +551,14 @@ let g:lightline = {
       \ }
 
 
+" NERDTree
+" 隠しファイルをデフォルトで表示させる
+let NERDTreeShowHidden = 1
+" デフォルトでツリーを表示させる
+"autocmd VimEnter * execute 'NERDTree'
+nnoremap <C-l> :NERDTree<CR>
+
+
 "Open Close Quickfix
 let s:quickfixwindow = "close"
 function! b:openCloseQuickfix()
@@ -291,6 +573,33 @@ endfunction
 
 nmap <silent> <F5> :call b:openCloseQuickfix()<CR>
 imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
+
+" syntastic {{{
+let g:syntastic_mode_map = { 'mode': 'active',
+            \ 'active_filetypes': ['ruby'] }
+let g:syntastic_ruby_checkers = ['rubocop']
+" }}}
+
+" alpaca tags {{{
+"
+" :TagsUpdate
+" Git配下のtagsを生成します。
+" :TagsBundle
+" Gemfileからgemのtagsを生成します。
+" :TagsSet
+" 生成したtagsを読み込みます。
+" :Unite tags
+" uniteを使ってtagを操作します
+augroup AlpacaTags
+  autocmd!
+  if exists(':Tags')
+    autocmd BufWritePost Gemfile TagsBundle
+    autocmd BufEnter * TagsSet
+    " 毎回保存と同時更新する場合はコメントを外す
+    " autocmd BufWritePost * TagsUpdate
+  endif
+augroup END
+" }}}
 
 " unite.vim {{{
 " バッファ一覧
