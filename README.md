@@ -12,6 +12,8 @@ git clone git@github.com:akiyoshi83/dotfiles.git
 
 echo "source \$HOME/dotfiles/.profile" >> ~/.bashrc
 
+ln -s ~/dotfiles/.gemrc ~/
+
 ln -s ~/dotfiles/.vimrc ~/
 ln -s ~/dotfiles/.vim   ~/
 mkdir -p ~/.vim/bundle
