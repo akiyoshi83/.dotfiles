@@ -242,6 +242,7 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'vim-ruby/vim-ruby'
 "NeoBundle 'vim-scripts/bufferlist.vim'
 
 " ruby plugins {{{
