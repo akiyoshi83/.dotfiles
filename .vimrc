@@ -168,6 +168,7 @@ set showtabline=2 " 常にタブラインを表示
 
 " filetype {{{
 au BufRead,BufNewFile *.rb set filetype=rb
+au BufRead,BufNewFile Gemfile set filetype=rb
 au FileType rb setlocal et ts=2 sw=2 sts=0
 
 au BufRead,BufNewFile *.js set filetype=javascript
@@ -192,6 +193,8 @@ au BufRead,BufNewFile *.go set filetype=go
 au FileType go setlocal noet ts=4 sw=4 sts=0
 
 " YAMLファイル用タブストップ設定
+au BufRead,BufNewFile *.yaml set filetype=yaml
+au BufRead,BufNewFile *.yml set filetype=yaml
 au FileType yaml setlocal expandtab ts=2 sw=2 fenc=utf-8
 " }}}
 
