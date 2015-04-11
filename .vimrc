@@ -651,7 +651,7 @@ au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
 " }}}
 
-" }}}
+" }}} NeoBundle
 
 " golang {{{
 " -----------
