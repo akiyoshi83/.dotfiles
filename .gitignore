@@ -104,4 +104,5 @@ TAGS
 # ----------
 !.gitkeep
 *.env
+.vim/tmp
 

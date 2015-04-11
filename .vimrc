@@ -48,6 +48,14 @@ set clipboard=unnamed
 " モードライン有効化
 set modelines=5
 
+" 一時ファイル
+set swapfile
+set directory=$HOME/.vim/tmp
+set backup
+set backupdir=$HOME/.vim/tmp
+set undofile
+set undodir=$HOME/.vim/tmp
+
 " .vimrc読み書き {{{
 " -----------------
 "edit .vimrc
