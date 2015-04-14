@@ -29,6 +29,13 @@ alias hgrep="fc -El 0 | grep"
 alias p='ps -f'
 alias sortnr='sort -n -r'
 
+function repos {
+    local dir="$( ghq list -p | peco )"
+    if [ ! -z "$dir" ] ; then
+        cd "$dir"
+    fi
+}
+
 # environment
 if [ -e $HOME/dotfiles/.profile.env ]; then
   source $HOME/dotfiles/.profile.env
