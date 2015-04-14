@@ -192,6 +192,8 @@ au FileType scss setlocal ts=2 sw=2 sts=0
 au BufRead,BufNewFile *.go set filetype=go
 au FileType go setlocal noet ts=4 sw=4 sts=0
 
+au BufRead,BufNewFile *.md set filetype=markdown
+
 " YAMLファイル用タブストップ設定
 au BufRead,BufNewFile *.yaml set filetype=yaml
 au BufRead,BufNewFile *.yml set filetype=yaml
@@ -260,16 +262,19 @@ NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'kana/vim-filetype-haskell'
+NeoBundle 'kannokanno/previm'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'ujihisa/neco-ghc'
 NeoBundle 'ujihisa/ref-hoogle'
 NeoBundle 'ujihisa/unite-haskellimport'
