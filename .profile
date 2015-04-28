@@ -1,7 +1,7 @@
 # vim:set et ts=2 sw=2 sts=2 ft=sh:
 
 # alias
-alias profile='source $HOME/dotfiles/.profile'
+alias profile='source $HOME/.dotfiles/.profile'
 alias bashrc='vim ~/.bashrc'
 alias zshrc='vim ~/.zshrc'
 
@@ -37,8 +37,8 @@ function repos {
 }
 
 # environment
-if [ -e $HOME/dotfiles/.profile.env ]; then
-  source $HOME/dotfiles/.profile.env
+if [ -e $HOME/.dotfiles/.profile.env ]; then
+  source $HOME/.dotfiles/.profile.env
 fi
 
 if [ `which vim` ]; then

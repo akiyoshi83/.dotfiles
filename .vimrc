@@ -2,7 +2,7 @@
 
 " set basic path
 set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-set runtimepath+=$HOME/dotfiles/.vim/
+set runtimepath+=$HOME/.dotfiles/.vim/
 
 " 基本的な見た目
 " -----------------
