@@ -57,3 +57,12 @@ fi
 if [ -e $HOME/.nodebrew/current/bin ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
 fi
+
+# Java
+export JAVA_HOME6=$(/usr/libexec/java_home -v 1.6 2>/dev/null)
+export JAVA_HOME7=$(/usr/libexec/java_home -v 1.7 2>/dev/null)
+export JAVA_HOME8=$(/usr/libexec/java_home -v 1.8 2>/dev/null)
+export JAVA_HOME=$JAVA_HOME7
+export PATH=$JAVA_HOME/bin:$PATH
+# Android Studio
+export STUDIO_JDK=${JAVA_HOME7%/*/*}
