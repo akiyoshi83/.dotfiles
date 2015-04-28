@@ -1,3 +1,8 @@
+if [ -e ~/.dotfiles ]; then
+    echo "~/.dotfiles already exists."
+    exit 1
+fi
+
 cd ~
 git clone https://github.com/akiyoshi83/.dotfiles.git
 
