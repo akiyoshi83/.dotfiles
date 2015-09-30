@@ -258,6 +258,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 
 NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'eagletmt/ghcmod-vim'
+NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'itchyny/lightline.vim'

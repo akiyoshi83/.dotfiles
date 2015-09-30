@@ -70,3 +70,9 @@ export STUDIO_JDK=${JAVA_HOME7%/*/*}
 # direnv
 eval "$(direnv hook bash)"
 
+# exenv
+if [ `which exenv` ]; then
+  export PATH="$HOME/.exenv/bin:$PATH"
+  eval "$(exenv init -)"
+fi
+
