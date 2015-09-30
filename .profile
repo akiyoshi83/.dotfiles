@@ -66,3 +66,7 @@ export JAVA_HOME=$JAVA_HOME7
 export PATH=$JAVA_HOME/bin:$PATH
 # Android Studio
 export STUDIO_JDK=${JAVA_HOME7%/*/*}
+
+# direnv
+eval "$(direnv hook bash)"
+
