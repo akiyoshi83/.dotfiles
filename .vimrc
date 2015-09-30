@@ -271,6 +271,7 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'slim-template/vim-slim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-surround'
@@ -613,7 +614,7 @@ imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
 
 " syntastic {{{
 let g:syntastic_mode_map = { 'mode': 'active',
-            \ 'active_filetypes': ['ruby'] }
+            \ 'active_filetypes': ['ruby', 'javascript', 'json'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 " }}}
 
