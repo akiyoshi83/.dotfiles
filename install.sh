@@ -27,3 +27,7 @@ if [ ! -e ~/.vim/bundle/neobundle.vim ]; then
     git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 fi
 vim +":NeoBundleInstall" +:q
+
+# tmux
+ln -s ~/.dotfiles/.tmux.conf ~/
+
