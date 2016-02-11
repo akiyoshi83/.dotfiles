@@ -260,6 +260,7 @@ NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'fatih/vim-go'
+NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'itchyny/lightline.vim'
@@ -614,6 +615,27 @@ endfunction
 
 nmap <silent> <F5> :call b:openCloseQuickfix()<CR>
 imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
+
+
+" glidenote/memolist.vim
+" https://github.com/glidenote/memolist.vim
+nnoremap <silent><Space>mn  :MemoNew<CR>
+nnoremap <silent><Space>ml  :MemoList<CR>
+nnoremap <silent><Space>mg  :MemoGrep<CR>
+
+let g:memolist_path = "~/Dropbox/Documents/memolist"
+let g:memolist_template_dir_path = "~/Dropbox/Documents/memolist"
+let g:memolist_memo_suffix = "md"
+let g:memolist_memo_date = "%Y-%m-%dT%H:%M"
+let g:memolist_prompt_tags = 1
+let g:memolist_prompt_categories = 1
+let g:memolist_qfixgrep = 1
+let g:memolist_vimfiler = 0
+let g:memolist_filename_prefix_none = 0
+let g:memolist_unite = 1
+let g:memolist_unite_source = "file_rec"
+let g:memolist_unite_option = "-auto-preview -start-insert"
+let g:memolist_ex_cmd = 'CtrlP'
 
 " syntastic {{{
 let g:syntastic_mode_map = { 'mode': 'active',
