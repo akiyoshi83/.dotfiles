@@ -259,6 +259,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'fatih/vim-go'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'itchyny/lightline.vim'
@@ -280,6 +281,7 @@ NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'ujihisa/neco-ghc'
 NeoBundle 'ujihisa/ref-hoogle'
 NeoBundle 'ujihisa/unite-haskellimport'
+NeoBundle 'vim-jp/vim-go-extra'
 NeoBundle 'vim-ruby/vim-ruby'
 "NeoBundle 'vim-scripts/bufferlist.vim'
 
@@ -662,15 +664,9 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 
 " golang {{{
 " -----------
-" !!! Requrie $GOROOT !!!
-if $GOROOT != ""
-  if isdirectory(globpath($GOROOT, "/misc/vim"))
-    set runtimepath+=$GOROOT/misc/vim
-  endif
-  " go get github.com/nsf/gocode
-  if isdirectory('$GOROOT/src/github.com/nfs/gocode/vim')
-    exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-    set completeopt=menu,preview
-  endif
+" go get github.com/nsf/gocode
+if isdirectory('$HOME/src/github.com/nfs/gocode/vim')
+  exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+  set completeopt=menu,preview
 endif
 "}}}
