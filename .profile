@@ -54,6 +54,12 @@ if [ `which rbenv` ]; then
   eval "$(rbenv init -)"
 fi
 
+if [ `which pyenv` ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
+
 if [ -e $HOME/.nodebrew/current/bin ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
 fi
