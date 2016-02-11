@@ -260,6 +260,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 "NeoBundle 'Shougo/vinarise.vim'
 
 NeoBundle 'cakebaker/scss-syntax.vim'
+NeoBundle 'clausreinke/typescript-tools.vim'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'elixir-lang/vim-elixir'
 NeoBundle 'fatih/vim-go'
@@ -271,6 +272,7 @@ NeoBundle 'kana/vim-filetype-haskell'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'leafgarland/typescript-vim.git'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'pangloss/vim-javascript'
@@ -618,6 +620,26 @@ endfunction
 
 nmap <silent> <F5> :call b:openCloseQuickfix()<CR>
 imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
+
+
+" Quickrun
+let g:quickrun_config = get(g:, 'quickrun_config', {})
+
+let g:quickrun_config._ = {
+      \ 'runner'    : 'vimproc',
+      \ 'runner/vimproc/updatetime' : 60,
+      \ 'outputter' : 'error',
+      \ 'outputter/error/success' : 'buffer',
+      \ 'outputter/error/error'   : 'quickfix',
+      \ 'outputter/buffer/split'  : ':rightbelow 8sp',
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ }
+let g:quickrun_config['babel'] = {
+      \   'command' : 'babel',
+      \   'exec' : ['%c %o %s:p -o %s:p.babel', 'node %s:p.babel'],
+      \   'hook/sweep/files': '%S:p.babel',
+      \ }
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
 
 " glidenote/memolist.vim
