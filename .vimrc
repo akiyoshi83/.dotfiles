@@ -606,17 +606,17 @@ let NERDTreeShowHidden = 1
 nnoremap <C-l> :NERDTree<CR>
 
 
-"Open Close Quickfix
-let s:quickfixwindow = "close"
-function! b:openCloseQuickfix()
-    if "open" ==? s:quickfixwindow
-        let s:quickfixwindow = "close"
-        cclose
-    else
-        let s:quickfixwindow = "open"
-        copen
-    endif
-endfunction
+""Open Close Quickfix
+"let s:quickfixwindow = "close"
+"function! b:openCloseQuickfix()
+"    if "open" ==? s:quickfixwindow
+"        let s:quickfixwindow = "close"
+"        cclose
+"    else
+"        let s:quickfixwindow = "open"
+"        copen
+"    endif
+"endfunction
 
 nmap <silent> <F5> :call b:openCloseQuickfix()<CR>
 imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
