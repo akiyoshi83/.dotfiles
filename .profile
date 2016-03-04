@@ -41,20 +41,20 @@ if [ -e $HOME/.dotfiles/.profile.env ]; then
   source $HOME/.dotfiles/.profile.env
 fi
 
-if [ `which vim > /dev/null 2>&1` ]; then
+if [ `which vim` ]; then
   export EDITOR=`which vim`
 fi
 
-if [ `which go > /dev/null 2>&1` ]; then
+if [ `which go` ]; then
   export GOPATH=$HOME
   export PATH=$PATH:$GOPATH/bin
 fi
 
-if [ `which rbenv > /dev/null 2>&1` ]; then
+if [ `which rbenv` ]; then
   eval "$(rbenv init -)"
 fi
 
-if [ `which pyenv > /dev/null 2>&1` ]; then
+if [ `which pyenv` ]; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
@@ -77,7 +77,7 @@ export STUDIO_JDK=${JAVA_HOME7%/*/*}
 eval "$(direnv hook bash)"
 
 # exenv
-if [ `which exenv > /dev/null 2>&1` ]; then
+if [ `which exenv` ]; then
   export PATH="$HOME/.exenv/bin:$PATH"
   eval "$(exenv init -)"
 fi
