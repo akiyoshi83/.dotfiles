@@ -201,6 +201,9 @@ au BufRead,BufNewFile *.md set filetype=markdown
 au BufRead,BufNewFile *.yaml set filetype=yaml
 au BufRead,BufNewFile *.yml set filetype=yaml
 au FileType yaml setlocal expandtab ts=2 sw=2 fenc=utf-8
+
+au BufRead,BufNewFile *.json set filetype=json
+au FileType json setlocal et ts=2 sw=2 sts=0
 " }}}
 
 " デフォルトのファイラー {{{
@@ -263,6 +266,7 @@ NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'clausreinke/typescript-tools.vim'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'elixir-lang/vim-elixir'
+NeoBundle 'elzr/vim-json'
 NeoBundle 'fatih/vim-go'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
