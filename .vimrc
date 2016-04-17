@@ -32,6 +32,7 @@ set listchars=tab:>-,trail:<
 
 " 折り畳み有効
 set foldmethod=marker
+set foldlevelstart=10
 
 " スクロールする時に上下が見えるようにする
 set scrolloff=5
@@ -273,6 +274,7 @@ NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'kana/vim-filetype-haskell'
+NeoBundle 'kana/vim-tabpagecd'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'kien/ctrlp.vim'
