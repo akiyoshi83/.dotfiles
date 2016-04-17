@@ -128,3 +128,39 @@ alias dri='docker_rmi'
 alias dc='docker-compose'
 alias dm='docker-machine'
 
+amazon-linux() {
+  aws ec2 describe-images --filter "Name=name,Values=amzn-ami-hvm-2015.09.2.x86_64-gp2" \
+    --region ap-northeast-1 --query "Images[].ImageId" --output text | tr -d [:space:]
+}
+
+cf-active-stacks() {
+ aws cloudformation list-stacks --stack-status-filter \
+   CREATE_FAILED \
+   CREATE_COMPLETE \
+   ROLLBACK_IN_PROGRESS \
+   ROLLBACK_FAILED \
+   ROLLBACK_COMPLETE \
+   DELETE_IN_PROGRESS \
+   DELETE_FAILED \
+   UPDATE_IN_PROGRESS \
+   UPDATE_COMPLETE_CLEANUP_IN_PROGRESS \
+   UPDATE_COMPLETE \
+   UPDATE_ROLLBACK_IN_PROGRESS \
+   UPDATE_ROLLBACK_FAILED \
+   UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS \
+   UPDATE_ROLLBACK_COMPLETE \
+   $@
+}
+
+# [USAGE]
+# ec2ssh --region REGION_NAME --profile PROFILE_NAME
+ec2ssh() {
+  ssh -l ec2-user $( \
+    aws ec2 describe-instances \
+        --filter "Name=instance-state-name,Values=running" \
+        --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
+        --output text \
+        ${@} \
+        | peco | awk '{print $1}' \
+  )
+}
