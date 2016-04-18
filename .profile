@@ -164,3 +164,29 @@ ec2ssh() {
         | peco | awk '{print $1}' \
   )
 }
+
+vpc-list() {
+  aws ec2 describe-vpcs --query "Vpcs[].[Tags[?Key=='Name'].Value | [0],VpcId,CidrBlock]" --output text ${@}
+}
+
+subnet-ist() {
+  aws ec2 describe-subnets --query "Subnets[].[Tag[?Key==Name].Value,VpcId,SubnetId,CidrBlock]" --output text ${@}
+}
+
+allow-me-ssh() {
+  vpcid=$1
+  gip=$(curl -s http://checkip.amazonaws.com/ | tr -d "\r\n")
+  if [ "$vpcid" == "" ]; then
+    vpcid=$(aws ec2 describe-vpcs --filter "Name=isDefault,Values=true" --query "Vpcs[0].VpcId" --output text)
+  fi
+  sgid=$(aws ec2 describe-security-groups --filter "Name=vpc-id,Values=vpc-d997fcbc,Name=group-name,Values=temp-ssh" --query "SecurityGroups[].GroupId" --output text)
+  if [ "$sgid" == "" ]; then
+    sgid=$(aws ec2 create-security-group --vpc-id vpc-d997fcbc --group-name temp-ssh --description "Temporary ssh security group" --query "GroupId" --output text)
+  fi
+  for cidr in $(aws ec2 describe-security-groups --filter "Name=group-id,Values=$sgid" --query "SecurityGroups[].IpPermissions[].IpRanges[].CidrIp" --output text); do
+    aws ec2 revoke-security-group-ingress --group-id $sgid --protocol tcp --port 22 --cidr $cidr
+  done
+  aws ec2 authorize-security-group-ingress --group-id $sgid --protocol tcp --port 22 --cidr "${gip}/32"
+  echo "$sgid : ${gip}/32"
+}
+
