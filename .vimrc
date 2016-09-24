@@ -718,7 +718,7 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 " golang {{{
 " -----------
 " go get github.com/nsf/gocode
-if isdirectory('$HOME/src/github.com/nfs/gocode/vim')
+if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
   exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
   set completeopt=menu,preview
 endif
