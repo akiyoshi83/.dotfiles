@@ -211,3 +211,14 @@ region() {
   local new_region=$1
   sed -ie "s/region = \(.*\)/region = ${new_region}/g" ~/.aws/config
 }
+
+cfn-new() {
+  cat <<EOS
+AWSTemplateFormatVersion: 2010-09-09
+Description: ''
+Parameters: {}
+Mappings: {}
+Resources: {}
+Outputs: {}
+EOS
+}
