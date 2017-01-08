@@ -723,3 +723,5 @@ if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
   set completeopt=menu,preview
 endif
 "}}}
+
+runtime! userautoload/*.vim
