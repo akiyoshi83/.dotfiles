@@ -1,28 +1,22 @@
 " vim:set et ts=2 sw=2 sts=2 ft=vim:
 
-" set basic path
-set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-set runtimepath+=$HOME/.dotfiles/.vim/
-
 " 基本的な見た目
-" -----------------
 syntax on
-set number
+set nonumber
 set showmode
 set ruler
 set showcmd
 set showmatch
-set laststatus=2
+set laststatus=2 "always
+set showtabline=2 " always
 set statusline=[%{&fileencoding}][\%{&fileformat}]\ %F%m%r%=<%c:%l>
 
 " 検索
-" -----------------
 set hlsearch
 set ignorecase
 set smartcase
-set smartindent
 
-" TAB
+set smartindent
 set expandtab
 set ts=4 sw=4 sts=0
 
@@ -44,9 +38,9 @@ nnoremap ; :
 set hidden
 
 " クリップボード設定
-set clipboard=unnamed
+set clipboard=unnamed " unnamed register = *
 
-" モードライン有効化
+" モードラインの検索行数を設定
 set modelines=5
 
 " 一時ファイル
@@ -57,8 +51,10 @@ set backupdir=$HOME/.vim/tmp
 set undofile
 set undodir=$HOME/.vim/tmp
 
+" カーソル位置のヘルプを引く
+nnoremap <C-h> :<C-u>help<Space><C-r><C-w><CR>
+
 " .vimrc読み書き {{{
-" -----------------
 "edit .vimrc
 nnoremap <silent> <Space>ev  :<C-u>tabnew $MYVIMRC<CR>
 nnoremap <silent> <Space>eg  :<C-u>tabnew $MYGVIMRC<CR>
@@ -66,21 +62,6 @@ nnoremap <silent> <Space>eg  :<C-u>tabnew $MYGVIMRC<CR>
 "reload .vimrc
 nnoremap <silent> <Space>rv :<C-u>source $MYVIMRC \| if has('gui_running') \| source $MYGVIMRC \| endif <CR>
 nnoremap <silent> <Space>rg :<C-u>source $MYGVIMRC<CR>
-"}}}
-
-" .vimrc.local {{{
-" http://vim-jp.org/vim-users-jp/2009/12/27/Hack-112.html
-augroup vimrc-local
-  autocmd!
-  autocmd BufNewFile,BufReadPost * call s:vimrc_local(expand('<afile>:p:h'))
-  autocmd BufReadPre .vimrc.local set ft=vim
-augroup END
-function! s:vimrc_local(loc)
-  let files = findfile('.vimrc.local', escape(a:loc, ' ') . ';', -1)
-  for i in reverse(filter(files, 'filereadable(v:val)'))
-    source `=i`
-  endfor
-endfunction
 "}}}
 
 " 文字コード, 改行コード {{{
@@ -132,40 +113,98 @@ if has('iconv')
 endif
 " }}}
 
-" タブページ関連 {{{
-" -----------------
-nnoremap <silent> <Space>te  :<C-u>tabedit<CR>
-nnoremap <silent> <Space>tc  :<C-u>tabclose<CR>
-nnoremap <silent> <Space>tf  :<C-u>tabfirst<CR>
-nnoremap <silent> <Space>tl  :<C-u>tablast<CR>
+" デフォルトのファイラー {{{
+" netrwは常にtree view
+let g:netrw_liststyle = 3
+" 'v'でファイルを開くときは右側に開く。(デフォルトが左側なので入れ替え)
+let g:netrw_altv = 1
+" 'o'でファイルを開くときは下側に開く。(デフォルトが上側なので入れ替え)
+let g:netrw_alto = 1
+"}}}
 
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction
+" dein.vim {{{
+if &compatible
+  set nocompatible
+endif
 
-" Set tabline.
-function! s:my_tabline()
-  let s = ''
-  for i in range(1, tabpagenr('$'))
-    let bufnrs = tabpagebuflist(i)
-    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
-    let no = i  " display 0-origin tabpagenr.
-    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-    let title = fnamemodify(bufname(bufnr), ':t')
-    let title = '[' . title . ']'
-    let s .= '%'.i.'T'
-    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-    let s .= no . ':' . title
-    let s .= mod
-    let s .= '%#TabLineFill# '
-  endfor
-  let s .= '%#TabLineFill#%T%=%#TabLine#'
-  return s
-endfunction
+set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
+call dein#begin('$HOME/.cache/dein')
+call dein#add('Shougo/dein.vim')
 
-let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
-set showtabline=2 " 常にタブラインを表示
+call dein#add('alpaca-tc/vim-endwise')
+"call dein#add('cakebaker/scss-syntax.vim')
+"call dein#add('clausreinke/typescript-tools.vim')
+call dein#add('elzr/vim-json')
+call dein#add('fatih/vim-go')
+"call dein#add('hail2u/vim-css3-syntax')
+"call dein#add('kchmck/vim-coffee-script')
+call dein#add('kien/ctrlp.vim')
+"call dein#add('leafgarland/typescript-vim.git')
+"call dein#add('othree/html5.vim')
+"call dein#add('pangloss/vim-javascript')
+call dein#add('plasticboy/vim-markdown')
+call dein#add('scrooloose/nerdtree')
+call dein#add('scrooloose/syntastic')
+"call dein#add('slim-template/vim-slim')
+call dein#add('thinca/vim-quickrun')
+"call dein#add('vim-ruby/vim-ruby')
+
+if executable('ctags')
+    call dein#add('vim-scripts/taglist.vim')
+endif
+
+call dein#end()
+
+filetype plugin indent on
+syntax enable
+
+if dein#check_install()
+  call dein#install()
+endif
+
 " }}}
+
+
+"taglist.vim
+"http://www.vim.org/scripts/script.php?script_id=273
+if executable('ctags')
+    :set tags=tags
+endif
+
+" NERDTree
+let NERDTreeShowHidden = 1 " 隠しファイルをデフォルトで表示させる
+"autocmd VimEnter * execute 'NERDTree' " デフォルトでツリーを表示させる
+nnoremap <C-l> :NERDTree<CR>
+
+" quickrun
+let g:quickrun_config = get(g:, 'quickrun_config', {})
+let g:quickrun_config._ = {
+      \ 'outputter' : 'error',
+      \ 'outputter/error/success' : 'buffer',
+      \ 'outputter/error/error'   : 'quickfix',
+      \ 'outputter/buffer/split'  : ':rightbelow 8sp',
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ }
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['go'] }
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+
+" golang {{{
+" -----------
+" go get github.com/nsf/gocode
+if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
+  exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+  set completeopt=menu,preview
+endif
+"}}}
 
 " filetype {{{
 au BufRead,BufNewFile *.rb set filetype=rb
@@ -198,7 +237,6 @@ au FileType go setlocal noet ts=4 sw=4 sts=0
 
 au BufRead,BufNewFile *.md set filetype=markdown
 
-" YAMLファイル用タブストップ設定
 au BufRead,BufNewFile *.yaml set filetype=yaml
 au BufRead,BufNewFile *.yml set filetype=yaml
 au FileType yaml setlocal expandtab ts=2 sw=2 fenc=utf-8
@@ -206,522 +244,5 @@ au FileType yaml setlocal expandtab ts=2 sw=2 fenc=utf-8
 au BufRead,BufNewFile *.json set filetype=json
 au FileType json setlocal et ts=2 sw=2 sts=0
 " }}}
-
-" デフォルトのファイラー {{{
-" -----------------
-" netrwは常にtree view
-let g:netrw_liststyle = 3
-" 'v'でファイルを開くときは右側に開く。(デフォルトが左側なので入れ替え)
-let g:netrw_altv = 1
-" 'o'でファイルを開くときは下側に開く。(デフォルトが上側なので入れ替え)
-let g:netrw_alto = 1
-"}}}
-
-" NeoBundle {{{
-"NeoBundle Scripts-----------------------------
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-
-  " Required:
-  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
-endif
-
-" Required:
-call neobundle#begin(expand('$HOME/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-
-" My Bundles here:
-"
-"function! s:meet_neocomplete_requirements()
-"    return has('lua') && (v:version > 703 || (v:version == 703 && has('patch885')))
-"endfunction
-"
-"if s:meet_neocomplete_requirements()
-"    NeoBundle 'Shougo/neocomplete.vim'
-"    NeoBundleFetch 'Shougo/neocomplcache.vim'
-"else
-"    NeoBundleFetch 'Shougo/neocomplete.vim'
-"    NeoBundle 'Shougo/neocomplcache.vim'
-"endif
-"
-"NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/unite.vim'
-"NeoBundle 'Shougo/vim-vcs'
-"NeoBundle 'Shougo/vimfiler.vim'
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
-"NeoBundle 'Shougo/vimshell.vim'
-"NeoBundle 'Shougo/vinarise.vim'
-
-NeoBundle 'cakebaker/scss-syntax.vim'
-NeoBundle 'clausreinke/typescript-tools.vim'
-NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'elixir-lang/vim-elixir'
-NeoBundle 'elzr/vim-json'
-NeoBundle 'fatih/vim-go'
-NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'hail2u/vim-css3-syntax'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'kana/vim-filetype-haskell'
-NeoBundle 'kana/vim-tabpagecd'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'leafgarland/typescript-vim.git'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'slim-template/vim-slim'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'ujihisa/neco-ghc'
-NeoBundle 'ujihisa/ref-hoogle'
-NeoBundle 'ujihisa/unite-haskellimport'
-NeoBundle 'vim-jp/vim-go-extra'
-NeoBundle 'vim-ruby/vim-ruby'
-"NeoBundle 'vim-scripts/bufferlist.vim'
-
-" ruby plugins {{{
-NeoBundle 'tpope/vim-rails', { 'autoload' : {
-      \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
-NeoBundle 'vim-scripts/dbext.vim', { 'autoload' : {
-      \ 'filetypes' : ['haml', 'ruby', 'eruby'] }}
-NeoBundleLazy 'alpaca-tc/vim-endwise.git', {
-      \ 'autoload' : {
-      \   'insert' : 1,
-      \ }}
-NeoBundleLazy 'edsono/vim-matchit', { 'autoload' : {
-      \ 'filetypes': 'ruby',
-      \ 'mappings' : ['nx', '%'] }}
-NeoBundleLazy 'basyura/unite-rails', {
-      \ 'depends' : 'Shougo/unite.vim',
-      \ 'autoload' : {
-      \   'unite_sources' : [
-      \     'rails/bundle', 'rails/bundled_gem', 'rails/config',
-      \     'rails/controller', 'rails/db', 'rails/destroy', 'rails/features',
-      \     'rails/gem', 'rails/gemfile', 'rails/generate', 'rails/git', 'rails/helper',
-      \     'rails/heroku', 'rails/initializer', 'rails/javascript', 'rails/lib', 'rails/log',
-      \     'rails/mailer', 'rails/model', 'rails/rake', 'rails/route', 'rails/schema', 'rails/spec',
-      \     'rails/stylesheet', 'rails/view'
-      \   ]
-      \ }}
-NeoBundleLazy 'taka84u9/vim-ref-ri', {
-      \ 'depends': ['Shougo/unite.vim', 'thinca/vim-ref'],
-      \ 'autoload': { 'filetypes': ['haml', 'ruby', 'eruby'] } }
-NeoBundleLazy 'alpaca-tc/alpaca_tags', {
-      \ 'depends': 'Shougo/vimproc.vim',
-      \ 'autoload' : {
-      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsBundle']
-      \ }}
-NeoBundleLazy 'tsukkee/unite-tag', {
-      \ 'depends' : ['Shougo/unite.vim'],
-      \ 'autoload' : {
-      \   'unite_sources' : ['tag', 'tag/file', 'tag/include']
-      \ }}
-NeoBundle 'scrooloose/syntastic'
-
-" vim-rails {{{
-let g:rails_default_file='config/database.yml'
-let g:rails_level = 4
-let g:rails_mappings=1
-let g:rails_modelines=0
-" let g:rails_some_option = 1
-" let g:rails_statusline = 1
-" let g:rails_subversion=0
-" let g:rails_syntax = 1
-" let g:rails_url='http://localhost:3000'
-" let g:rails_ctags_arguments='--languages=-javascript'
-" let g:rails_ctags_arguments = ''
-function! SetUpRailsSetting()
-  nnoremap <buffer><Space>r :R<CR>
-  nnoremap <buffer><Space>a :A<CR>
-  nnoremap <buffer><Space>m :Rmodel<Space>
-  nnoremap <buffer><Space>c :Rcontroller<Space>
-  nnoremap <buffer><Space>v :Rview<Space>
-  nnoremap <buffer><Space>p :Rpreview<CR>
-endfunction
-
-aug MyAutoCmd
-  au User Rails call SetUpRailsSetting()
-aug END
-
-aug RailsDictSetting
-  au!
-aug END
-" }}}
-
-" Unite-rails.vim {{{
-function! UniteRailsSetting()
-  nnoremap <buffer><C-H><C-H><C-H>  :<C-U>Unite rails/view<CR>
-  nnoremap <buffer><C-H><C-H>       :<C-U>Unite rails/model<CR>
-  nnoremap <buffer><C-H>            :<C-U>Unite rails/controller<CR>
-
-  nnoremap <buffer><C-H>c           :<C-U>Unite rails/config<CR>
-  nnoremap <buffer><C-H>s           :<C-U>Unite rails/spec<CR>
-  nnoremap <buffer><C-H>m           :<C-U>Unite rails/db -input=migrate<CR>
-  nnoremap <buffer><C-H>l           :<C-U>Unite rails/lib<CR>
-  nnoremap <buffer><expr><C-H>g     ':e '.b:rails_root.'/Gemfile<CR>'
-  nnoremap <buffer><expr><C-H>r     ':e '.b:rails_root.'/config/routes.rb<CR>'
-  nnoremap <buffer><expr><C-H>se    ':e '.b:rails_root.'/db/seeds.rb<CR>'
-  nnoremap <buffer><C-H>ra          :<C-U>Unite rails/rake<CR>
-  nnoremap <buffer><C-H>h           :<C-U>Unite rails/heroku<CR>
-endfunction
-aug MyAutoCmd
-  au User Rails call UniteRailsSetting()
-aug END
-" }}}
-
-" vim-ref {{{
-let g:ref_open                    = 'split'
-let g:ref_refe_cmd                = expand('~/.vim/ref/ruby-ref2.1.2/refe-2_1_2')
-
-nnoremap rr :<C-U>Unite ref/refe     -default-action=split -input=
-nnoremap ri :<C-U>Unite ref/ri       -default-action=split -input=
-
-aug MyAutoCmd
-  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>KK :<C-U>Unite -no-start-insert ref/ri   -input=<C-R><C-W><CR>
-  au FileType ruby,eruby,ruby.rspec nnoremap <silent><buffer>K  :<C-U>Unite -no-start-insert ref/refe -input=<C-R><C-W><CR>
-aug END
-" }}}
-
-" endwise.vim {{{
-let g:endwise_no_mappings=1
-" }}}
-
-" matchit {{{
-if !exists('loaded_matchit')
-  runtime macros/matchit.vim
-endif
-" }}}
-
-" switch.vim {{{
-function! s:separate_defenition_to_each_filetypes(ft_dictionary) "{{{
-  let result = {}
-
-  for [filetypes, value] in items(a:ft_dictionary)
-    for ft in split(filetypes, ",")
-      if !has_key(result, ft)
-        let result[ft] = []
-      endif
-
-      call extend(result[ft], copy(value))
-    endfor
-  endfor
-
-  return result
-endfunction"}}}
-
-" ------------------------------------
-" switch.vim
-" ------------------------------------
-nnoremap ! :Switch<CR>
-let s:switch_definition = {
-      \ '*': [
-      \   ['is', 'are']
-      \ ],
-      \ 'ruby,eruby,haml' : [
-      \   ['if', 'unless'],
-      \   ['while', 'until'],
-      \   ['.blank?', '.present?'],
-      \   ['include', 'extend'],
-      \   ['class', 'module'],
-      \   ['.inject', '.delete_if'],
-      \   ['.map', '.map!'],
-      \   ['attr_accessor', 'attr_reader', 'attr_writer'],
-      \ ],
-      \ 'Gemfile,Berksfile' : [
-      \   ['=', '<', '<=', '>', '>=', '~>'],
-      \ ],
-      \ 'ruby.application_template' : [
-      \   ['yes?', 'no?'],
-      \   ['lib', 'initializer', 'file', 'vendor', 'rakefile'],
-      \   ['controller', 'model', 'view', 'migration', 'scaffold'],
-      \ ],
-      \ 'erb,html,php' : [
-      \   { '<!--\([a-zA-Z0-9 /]\+\)--></\(div\|ul\|li\|a\)>' : '</\2><!--\1-->' },
-      \ ],
-      \ 'rails' : [
-      \   [100, ':continue', ':information'],
-      \   [101, ':switching_protocols'],
-      \   [102, ':processing'],
-      \   [200, ':ok', ':success'],
-      \   [201, ':created'],
-      \   [202, ':accepted'],
-      \   [203, ':non_authoritative_information'],
-      \   [204, ':no_content'],
-      \   [205, ':reset_content'],
-      \   [206, ':partial_content'],
-      \   [207, ':multi_status'],
-      \   [208, ':already_reported'],
-      \   [226, ':im_used'],
-      \   [300, ':multiple_choices'],
-      \   [301, ':moved_permanently'],
-      \   [302, ':found'],
-      \   [303, ':see_other'],
-      \   [304, ':not_modified'],
-      \   [305, ':use_proxy'],
-      \   [306, ':reserved'],
-      \   [307, ':temporary_redirect'],
-      \   [308, ':permanent_redirect'],
-      \   [400, ':bad_request'],
-      \   [401, ':unauthorized'],
-      \   [402, ':payment_required'],
-      \   [403, ':forbidden'],
-      \   [404, ':not_found'],
-      \   [405, ':method_not_allowed'],
-      \   [406, ':not_acceptable'],
-      \   [407, ':proxy_authentication_required'],
-      \   [408, ':request_timeout'],
-      \   [409, ':conflict'],
-      \   [410, ':gone'],
-      \   [411, ':length_required'],
-      \   [412, ':precondition_failed'],
-      \   [413, ':request_entity_too_large'],
-      \   [414, ':request_uri_too_long'],
-      \   [415, ':unsupported_media_type'],
-      \   [416, ':requested_range_not_satisfiable'],
-      \   [417, ':expectation_failed'],
-      \   [422, ':unprocessable_entity'],
-      \   [423, ':precondition_required'],
-      \   [424, ':too_many_requests'],
-      \   [426, ':request_header_fields_too_large'],
-      \   [500, ':internal_server_error'],
-      \   [501, ':not_implemented'],
-      \   [502, ':bad_gateway'],
-      \   [503, ':service_unavailable'],
-      \   [504, ':gateway_timeout'],
-      \   [505, ':http_version_not_supported'],
-      \   [506, ':variant_also_negotiates'],
-      \   [507, ':insufficient_storage'],
-      \   [508, ':loop_detected'],
-      \   [510, ':not_extended'],
-      \   [511, ':network_authentication_required'],
-      \ ],
-      \ 'rspec': [
-      \   ['describe', 'context', 'specific', 'example'],
-      \   ['before', 'after'],
-      \   ['be_true', 'be_false'],
-      \   ['get', 'post', 'put', 'delete'],
-      \   ['==', 'eql', 'equal'],
-      \   { '\.should_not': '\.should' },
-      \   ['\.to_not', '\.to'],
-      \   { '\([^. ]\+\)\.should\(_not\|\)': 'expect(\1)\.to\2' },
-      \   { 'expect(\([^. ]\+\))\.to\(_not\|\)': '\1.should\2' },
-      \ ],
-      \ 'markdown' : [
-      \   ['[ ]', '[x]']
-      \ ]
-      \ }
-
-let s:switch_definition = s:separate_defenition_to_each_filetypes(s:switch_definition)
-function! s:define_switch_mappings() "{{{
-  if exists('b:switch_custom_definitions')
-    unlet b:switch_custom_definitions
-  endif
-
-  let dictionary = []
-  for filetype in split(&ft, '\.')
-    if has_key(s:switch_definition, filetype)
-      let dictionary = extend(dictionary, s:switch_definition[filetype])
-    endif
-  endfor
-
-  if exists('b:rails_root')
-    let dictionary = extend(dictionary, s:switch_definition['rails'])
-  endif
-
-  if has_key(s:switch_definition, '*')
-    let dictionary = extend(dictionary, s:switch_definition['*'])
-  endif
-
-  "if !empty('dictionary')
-  "  call alpaca#let_b:('switch_custom_definitions', dictionary)
-  "endif
-endfunction"}}}
-
-augroup SwitchSetting
-  autocmd!
-  autocmd Filetype * if !empty(split(&ft, '\.')) | call <SID>define_switch_mappings() | endif
-augroup END
-" }}}
-
-" }}} ruby plugins
-
-if executable('ctags')
-    NeoBundle 'vim-scripts/taglist.vim'
-endif
-
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
-
-
-
-""bufferlist.vim
-""http://www.vim.org/scripts/script.php?script_id=1325
-"nnoremap <C-l> :call BufferList()<CR>
-
-
-"taglist.vim
-"http://www.vim.org/scripts/script.php?script_id=273
-if executable('ctags')
-    :set tags=tags
-endif
-
-
-"vim-ruby
-if has('ruby')
-    compiler ruby
-endif
-
-
-"lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'solarized_dark',
-      \ }
-
-
-" NERDTree
-" 隠しファイルをデフォルトで表示させる
-let NERDTreeShowHidden = 1
-" デフォルトでツリーを表示させる
-"autocmd VimEnter * execute 'NERDTree'
-nnoremap <C-l> :NERDTree<CR>
-
-
-""Open Close Quickfix
-"let s:quickfixwindow = "close"
-"function! b:openCloseQuickfix()
-"    if "open" ==? s:quickfixwindow
-"        let s:quickfixwindow = "close"
-"        cclose
-"    else
-"        let s:quickfixwindow = "open"
-"        copen
-"    endif
-"endfunction
-
-nmap <silent> <F5> :call b:openCloseQuickfix()<CR>
-imap <silent> <F5> <C-o>:call b:openCloseQuickfix()<CR>
-
-
-" Quickrun
-let g:quickrun_config = get(g:, 'quickrun_config', {})
-
-let g:quickrun_config._ = {
-      \ 'runner'    : 'vimproc',
-      \ 'runner/vimproc/updatetime' : 60,
-      \ 'outputter' : 'error',
-      \ 'outputter/error/success' : 'buffer',
-      \ 'outputter/error/error'   : 'quickfix',
-      \ 'outputter/buffer/split'  : ':rightbelow 8sp',
-      \ 'outputter/buffer/close_on_empty' : 1,
-      \ }
-let g:quickrun_config['babel'] = {
-      \   'command' : 'babel',
-      \   'exec' : ['%c %o %s:p -o %s:p.babel', 'node %s:p.babel'],
-      \   'hook/sweep/files': '%S:p.babel',
-      \ }
-nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
-
-
-" glidenote/memolist.vim
-" https://github.com/glidenote/memolist.vim
-nnoremap <silent><Space>mn  :MemoNew<CR>
-nnoremap <silent><Space>ml  :MemoList<CR>
-nnoremap <silent><Space>mg  :MemoGrep<CR>
-
-let g:memolist_path = "~/Dropbox/Documents/memolist"
-let g:memolist_template_dir_path = "~/Dropbox/Documents/memolist"
-let g:memolist_memo_suffix = "md"
-let g:memolist_memo_date = "%Y-%m-%dT%H:%M"
-let g:memolist_prompt_tags = 1
-let g:memolist_prompt_categories = 1
-let g:memolist_qfixgrep = 1
-let g:memolist_vimfiler = 0
-let g:memolist_filename_prefix_none = 0
-let g:memolist_unite = 1
-let g:memolist_unite_source = "file_rec"
-let g:memolist_unite_option = "-auto-preview -start-insert"
-let g:memolist_ex_cmd = 'CtrlP'
-
-" syntastic {{{
-let g:syntastic_mode_map = { 'mode': 'active',
-            \ 'active_filetypes': ['ruby', 'javascript', 'json'] }
-let g:syntastic_ruby_checkers = ['rubocop']
-" }}}
-
-" alpaca tags {{{
-"
-" :TagsUpdate
-" Git配下のtagsを生成します。
-" :TagsBundle
-" Gemfileからgemのtagsを生成します。
-" :TagsSet
-" 生成したtagsを読み込みます。
-" :Unite tags
-" uniteを使ってtagを操作します
-augroup AlpacaTags
-  autocmd!
-  if exists(':Tags')
-    autocmd BufWritePost Gemfile TagsBundle
-    autocmd BufEnter * TagsSet
-    " 毎回保存と同時更新する場合はコメントを外す
-    " autocmd BufWritePost * TagsUpdate
-  endif
-augroup END
-" }}}
-
-" unite.vim {{{
-" バッファ一覧
-nnoremap <silent> <Space>ub :<C-u>Unite buffer<CR>
-nnoremap <silent> <Space>j  :<C-u>Unite buffer<CR>
-" ファイル一覧
-nnoremap <silent> <Space>uf :<C-u>Unite file_rec<CR>
-nnoremap <silent> <Space>k :<C-u>Unite file_rec<CR>
-nnoremap <silent> <Space>f :<C-u>Unite file<CR>
-" タブページ一覧
-nnoremap <silent> <Space>ut :<C-u>Unite tab<CR>
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" }}}
-
-" }}} NeoBundle
-
-" golang {{{
-" -----------
-" go get github.com/nsf/gocode
-if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
-  exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-  set completeopt=menu,preview
-endif
-"}}}
 
 runtime! userautoload/*.vim
