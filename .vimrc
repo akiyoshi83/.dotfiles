@@ -128,32 +128,36 @@ if &compatible
 endif
 
 set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
-call dein#begin('$HOME/.cache/dein')
-call dein#add('Shougo/dein.vim')
 
-call dein#add('alpaca-tc/vim-endwise')
-"call dein#add('cakebaker/scss-syntax.vim')
-"call dein#add('clausreinke/typescript-tools.vim')
-call dein#add('elzr/vim-json')
-call dein#add('fatih/vim-go')
-"call dein#add('hail2u/vim-css3-syntax')
-"call dein#add('kchmck/vim-coffee-script')
-call dein#add('kien/ctrlp.vim')
-"call dein#add('leafgarland/typescript-vim.git')
-"call dein#add('othree/html5.vim')
-"call dein#add('pangloss/vim-javascript')
-call dein#add('plasticboy/vim-markdown')
-call dein#add('scrooloose/nerdtree')
-call dein#add('scrooloose/syntastic')
-"call dein#add('slim-template/vim-slim')
-call dein#add('thinca/vim-quickrun')
-"call dein#add('vim-ruby/vim-ruby')
+if dein#load_state('$HOME/.cache/')
+  call dein#begin('$HOME/.cache/')
+  call dein#add('Shougo/dein.vim')
 
-if executable('ctags')
-    call dein#add('vim-scripts/taglist.vim')
+  call dein#add('alpaca-tc/vim-endwise')
+  "call dein#add('cakebaker/scss-syntax.vim')
+  "call dein#add('clausreinke/typescript-tools.vim')
+  call dein#add('elzr/vim-json')
+  call dein#add('fatih/vim-go')
+  "call dein#add('hail2u/vim-css3-syntax')
+  "call dein#add('kchmck/vim-coffee-script')
+  call dein#add('kien/ctrlp.vim')
+  "call dein#add('leafgarland/typescript-vim.git')
+  "call dein#add('othree/html5.vim')
+  "call dein#add('pangloss/vim-javascript')
+  call dein#add('plasticboy/vim-markdown')
+  call dein#add('scrooloose/nerdtree')
+  call dein#add('scrooloose/syntastic')
+  "call dein#add('slim-template/vim-slim')
+  call dein#add('thinca/vim-quickrun')
+  "call dein#add('vim-ruby/vim-ruby')
+
+  if executable('ctags')
+      call dein#add('vim-scripts/taglist.vim')
+  endif
+
+  call dein#end()
+  call dein#save_state()
 endif
-
-call dein#end()
 
 filetype plugin indent on
 syntax enable
