@@ -122,50 +122,62 @@ let g:netrw_altv = 1
 let g:netrw_alto = 1
 "}}}
 
-" dein.vim {{{
-if &compatible
-  set nocompatible
+" NeoBundle {{{
+"NeoBundle Scripts-----------------------------
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+
+  " Required:
+  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
 
-set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
+" Required:
+call neobundle#begin(expand('$HOME/.vim/bundle'))
 
-if dein#load_state('$HOME/.cache/')
-  call dein#begin('$HOME/.cache/')
-  call dein#add('Shougo/dein.vim')
+" Let NeoBundle manage NeoBundle
+" Required:
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-  call dein#add('alpaca-tc/vim-endwise')
-  "call dein#add('cakebaker/scss-syntax.vim')
-  "call dein#add('clausreinke/typescript-tools.vim')
-  call dein#add('elzr/vim-json')
-  call dein#add('fatih/vim-go')
-  "call dein#add('hail2u/vim-css3-syntax')
-  "call dein#add('kchmck/vim-coffee-script')
-  call dein#add('kien/ctrlp.vim')
-  "call dein#add('leafgarland/typescript-vim.git')
-  "call dein#add('othree/html5.vim')
-  "call dein#add('pangloss/vim-javascript')
-  call dein#add('plasticboy/vim-markdown')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('scrooloose/syntastic')
-  "call dein#add('slim-template/vim-slim')
-  call dein#add('thinca/vim-quickrun')
-  "call dein#add('vim-ruby/vim-ruby')
+NeoBundle 'Shougo/vimproc.vim', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+\ }
 
-  if executable('ctags')
-      call dein#add('vim-scripts/taglist.vim')
-  endif
-
-  call dein#end()
-  call dein#save_state()
+NeoBundle 'alpaca-tc/vim-endwise'
+"NeoBundle 'cakebaker/scss-syntax.vim'
+"NeoBundle 'clausreinke/typescript-tools.vim'
+NeoBundle 'elzr/vim-json'
+NeoBundle 'fatih/vim-go'
+"NeoBundle 'hail2u/vim-css3-syntax'
+"NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'kien/ctrlp.vim'
+"NeoBundle 'leafgarland/typescript-vim.git'
+"NeoBundle 'othree/html5.vim'
+"NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'plasticboy/vim-markdown'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/syntastic'
+"NeoBundle 'slim-template/vim-slim'
+NeoBundle 'thinca/vim-quickrun'
+"NeoBundle 'vim-ruby/vim-ruby'
+if executable('ctags')
+    NeoBundle 'vim-scripts/taglist.vim'
 endif
 
+" Required:
+call neobundle#end()
+
+" Required:
 filetype plugin indent on
-syntax enable
 
-if dein#check_install()
-  call dein#install()
-endif
-
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+"End NeoBundle Scripts-------------------------
 " }}}
 
 

@@ -22,13 +22,11 @@ ln -s ~/.dotfiles/.vim   ~/
 mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/tmp
 
-# dein.vim
-if [ ! -e ~/.cache/dein ]; then
-    curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > dein-installer.sh
-    sh ./dein-installer.sh ~/.cache/dein
-    rm -f ./dein-installer.sh
+# vim NeoBundle
+if [ ! -e ~/.vim/bundle/neobundle.vim ]; then
+    git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 fi
-vim +":call dein#install()" +:q
+vim +":NeoBundleInstall" +:q
 
 # tmux
 ln -s ~/.dotfiles/.tmux.conf ~/
