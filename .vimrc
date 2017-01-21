@@ -122,67 +122,19 @@ let g:netrw_altv = 1
 let g:netrw_alto = 1
 "}}}
 
-" NeoBundle {{{
-"NeoBundle Scripts-----------------------------
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-
-  " Required:
-  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
-endif
-
-" Required:
-call neobundle#begin(expand('$HOME/.vim/bundle'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-\ }
-
-NeoBundle 'alpaca-tc/vim-endwise'
-"NeoBundle 'cakebaker/scss-syntax.vim'
-"NeoBundle 'clausreinke/typescript-tools.vim'
-NeoBundle 'elzr/vim-json'
-NeoBundle 'fatih/vim-go'
-"NeoBundle 'hail2u/vim-css3-syntax'
-"NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'kien/ctrlp.vim'
-"NeoBundle 'leafgarland/typescript-vim.git'
-"NeoBundle 'othree/html5.vim'
-"NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'scrooloose/syntastic'
-"NeoBundle 'slim-template/vim-slim'
-NeoBundle 'thinca/vim-quickrun'
-"NeoBundle 'vim-ruby/vim-ruby'
+" vim-plug
+call plug#begin('~/.vim/plugged')
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
+Plug 'kien/ctrlp.vim'
+Plug 'scrooloose/nerdtree'
 if executable('ctags')
-    NeoBundle 'vim-scripts/taglist.vim'
+    Plug 'vim-scripts/taglist.vim'
 endif
+call plug#end()
 
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-"End NeoBundle Scripts-------------------------
-" }}}
-
-
-"taglist.vim
-"http://www.vim.org/scripts/script.php?script_id=273
+" taglist.vim
+" http://www.vim.org/scripts/script.php?script_id=273
 if executable('ctags')
     :set tags=tags
 endif
@@ -191,27 +143,6 @@ endif
 let NERDTreeShowHidden = 1 " 隠しファイルをデフォルトで表示させる
 "autocmd VimEnter * execute 'NERDTree' " デフォルトでツリーを表示させる
 nnoremap <C-l> :NERDTree<CR>
-
-" quickrun
-let g:quickrun_config = get(g:, 'quickrun_config', {})
-let g:quickrun_config._ = {
-      \ 'outputter' : 'error',
-      \ 'outputter/error/success' : 'buffer',
-      \ 'outputter/error/error'   : 'quickfix',
-      \ 'outputter/buffer/split'  : ':rightbelow 8sp',
-      \ 'outputter/buffer/close_on_empty' : 1,
-      \ }
-
-" syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['go'] }
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 
 " golang {{{
 " -----------

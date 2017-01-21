@@ -19,14 +19,10 @@ EOF
 # vim
 ln -s ~/.dotfiles/.vimrc ~/
 ln -s ~/.dotfiles/.vim   ~/
-mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/tmp
 
-# vim NeoBundle
-if [ ! -e ~/.vim/bundle/neobundle.vim ]; then
-    git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
-fi
-vim +":NeoBundleInstall" +:q
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # tmux
 ln -s ~/.dotfiles/.tmux.conf ~/
