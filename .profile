@@ -155,14 +155,15 @@ cf-active-stacks() {
 # [USAGE]
 # ec2ssh --region REGION_NAME --profile PROFILE_NAME
 ec2ssh() {
-  ssh -l ec2-user $( \
-    aws ec2 describe-instances \
-        --filter "Name=instance-state-name,Values=running" \
-        --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
-        --output text \
-        ${@} \
-        | peco | awk '{print $1}' \
-  )
+  user=${1:-'ec2-user'}
+  shift
+  selected=$(aws ec2 describe-instances \
+    --filter "Name=instance-state-name,Values=running" \
+    --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
+    --output text \
+    ${@} \
+    | peco)
+  ssh -l "$user" $(echo -n $selected | awk '{print $1}')
 }
 
 vpc-list() {
