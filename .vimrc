@@ -127,6 +127,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
 Plug 'kien/ctrlp.vim'
+Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 if executable('ctags')
     Plug 'vim-scripts/taglist.vim'
