@@ -11,6 +11,9 @@ set laststatus=2 "always
 set showtabline=2 " always
 set statusline=[%{&fileencoding}][\%{&fileformat}]\ %F%m%r%=<%c:%l>
 
+" 字下げ、改行をバックスペースで削除
+set backspace=indent,eol,start
+
 " 検索
 set hlsearch
 set ignorecase
