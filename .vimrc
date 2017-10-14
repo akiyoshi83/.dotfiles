@@ -129,6 +129,8 @@ let g:netrw_alto = 1
 call plug#begin('~/.vim/plugged')
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
+Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
