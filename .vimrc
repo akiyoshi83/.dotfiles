@@ -158,12 +158,12 @@ endif
 "}}}
 
 " filetype {{{
-au BufRead,BufNewFile *.rb set filetype=rb
-au BufRead,BufNewFile Gemfile set filetype=rb
-au BufRead,BufNewFile *.erb set filetype=rb
-au BufRead,BufNewFile *.haml set filetype=rb
-au BufRead,BufNewFile *.slim set filetype=rb
-au FileType rb setlocal et ts=2 sw=2 sts=0
+au BufRead,BufNewFile *.rb set filetype=ruby
+au BufRead,BufNewFile Gemfile set filetype=ruby
+au BufRead,BufNewFile *.erb set filetype=ruby
+au BufRead,BufNewFile *.haml set filetype=ruby
+au BufRead,BufNewFile *.slim set filetype=ruby
+au FileType ruby setlocal et ts=2 sw=2 sts=0
 
 au BufRead,BufNewFile *.js set filetype=javascript
 au FileType javascript setlocal et ts=2 sw=2 sts=0
