@@ -129,8 +129,21 @@ alias dc='docker-compose'
 alias dm='docker-machine'
 
 amazon-linux() {
-  aws ec2 describe-images --filter "Name=name,Values=amzn-ami-hvm-2015.09.2.x86_64-gp2" \
-    --region ap-northeast-1 --query "Images[].ImageId" --output text | tr -d [:space:]
+  cond=$1
+  id_only=$2
+  line=$(aws ec2 describe-images \
+    --output json \
+    --owner amazon \
+    --filter "Name=name,Values=amzn-ami-*${cond}*" \
+    | jq  -c ".Images[] | [.ImageId, .VirtualizationType, .RootDeviceType, .Name, .Description]" \
+    | sed -e s/,/$'\t'/g \
+    | tr -d '\[\]"' \
+    | peco)
+  if [ ! -z "${id_only}" ]; then
+    echo $line | cut -d' ' -f1
+  else
+    echo $line
+  fi
 }
 
 cf-active-stacks() {
@@ -166,11 +179,15 @@ ec2ssh() {
   ssh -l "$user" $(echo -n $selected | awk '{print $1}')
 }
 
+default-vpc() {
+  aws ec2 describe-vpcs --filter Name=is-default,Values=true --query "Vpcs[].{VpcId:VpcId,CidrBlock:CidrBlock}" --output text
+}
+
 vpc-list() {
   aws ec2 describe-vpcs --query "Vpcs[].[Tags[?Key=='Name'].Value | [0],VpcId,CidrBlock]" --output text ${@}
 }
 
-subnet-ist() {
+subnet-list() {
   aws ec2 describe-subnets --query "Subnets[].[Tag[?Key==Name].Value,VpcId,SubnetId,CidrBlock]" --output text ${@}
 }
 
