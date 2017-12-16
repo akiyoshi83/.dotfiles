@@ -129,9 +129,11 @@ let g:netrw_alto = 1
 call plug#begin('~/.vim/plugged')
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
-Plug 'plasticboy/vim-markdown'
+Plug 'fuenor/qfixhowm'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
+Plug 'plasticboy/vim-markdown'
+Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 if executable('ctags')
@@ -158,6 +160,27 @@ if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
   set completeopt=menu,preview
 endif
 "}}}
+
+" ctrlp
+if executable('ag')
+  let g:ctrlp_use_caching=0
+  let g:ctrlp_user_command='ag %s -i --nocolor --nogroup -g ""'
+endif
+
+" QFixHowm {{{
+let QFixHowm_Key = '<Space>'
+let QFixHowm_KeyB = ''
+let howm_dir = $HOME . 'Documents/memo'
+if $MEMODIR != ""
+  let howm_dir = $MEMODIR
+endif
+let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
+let QFixHowm_FileType = 'markdown'
+let QFixHowm_Title = '#'
+let QFixWin_EnableMode = 1
+let QFix_UseLocationList = 1
+"}}}
+"
 
 " filetype {{{
 au BufRead,BufNewFile *.rb set filetype=ruby
