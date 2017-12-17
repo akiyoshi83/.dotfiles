@@ -168,12 +168,28 @@ if executable('ag')
 endif
 
 " QFixHowm {{{
+function! g:Memo_dir()
+  let dir = $HOME . "/Documents/memo"
+  if $MEMODIR != ""
+    let dir = $MEMODIR
+  endif
+  if !isdirectory(dir)
+      call mkdir(dir, "p")
+  endif
+  return dir
+endfunction
+
+function! g:Memo_cd()
+  let dir = Memo_dir()
+  exe 'cd' dir
+  NERDTree
+endfunction
+
+nnoremap <silent> <Space>mc  :<C-u>call Memo_cd()<CR>
+
 let QFixHowm_Key = '<Space>'
 let QFixHowm_KeyB = ''
-let howm_dir = $HOME . 'Documents/memo'
-if $MEMODIR != ""
-  let howm_dir = $MEMODIR
-endif
+let howm_dir = Memo_dir()
 let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
 let QFixHowm_FileType = 'markdown'
 let QFixHowm_Title = '#'
