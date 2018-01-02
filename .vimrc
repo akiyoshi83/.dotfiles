@@ -11,6 +11,9 @@ set laststatus=2 "always
 set showtabline=2 " always
 set statusline=[%{&fileencoding}][\%{&fileformat}]\ %F%m%r%=<%c:%l>
 
+" 字下げ、改行をバックスペースで削除
+set backspace=indent,eol,start
+
 " 検索
 set hlsearch
 set ignorecase
@@ -126,7 +129,11 @@ let g:netrw_alto = 1
 call plug#begin('~/.vim/plugged')
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
+Plug 'fuenor/qfixhowm'
+Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
+Plug 'plasticboy/vim-markdown'
+Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 if executable('ctags')
@@ -154,13 +161,50 @@ if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
 endif
 "}}}
 
+" ctrlp
+if executable('ag')
+  let g:ctrlp_use_caching=0
+  let g:ctrlp_user_command='ag %s -i --nocolor --nogroup -g ""'
+endif
+
+" QFixHowm {{{
+function! g:Memo_dir()
+  let dir = $HOME . "/Documents/memo"
+  if $MEMODIR != ""
+    let dir = $MEMODIR
+  endif
+  if !isdirectory(dir)
+      call mkdir(dir, "p")
+  endif
+  return dir
+endfunction
+
+function! g:Memo_cd()
+  let dir = Memo_dir()
+  exe 'cd' dir
+  NERDTree
+endfunction
+
+nnoremap <silent> <Space>mc  :<C-u>call Memo_cd()<CR>
+
+let QFixHowm_Key = '<Space>'
+let QFixHowm_KeyB = ''
+let howm_dir = Memo_dir()
+let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
+let QFixHowm_FileType = 'markdown'
+let QFixHowm_Title = '#'
+let QFixWin_EnableMode = 1
+let QFix_UseLocationList = 1
+"}}}
+"
+
 " filetype {{{
-au BufRead,BufNewFile *.rb set filetype=rb
-au BufRead,BufNewFile Gemfile set filetype=rb
-au BufRead,BufNewFile *.erb set filetype=rb
-au BufRead,BufNewFile *.haml set filetype=rb
-au BufRead,BufNewFile *.slim set filetype=rb
-au FileType rb setlocal et ts=2 sw=2 sts=0
+au BufRead,BufNewFile *.rb set filetype=ruby
+au BufRead,BufNewFile Gemfile set filetype=ruby
+au BufRead,BufNewFile *.erb set filetype=ruby
+au BufRead,BufNewFile *.haml set filetype=ruby
+au BufRead,BufNewFile *.slim set filetype=ruby
+au FileType ruby setlocal et ts=2 sw=2 sts=0
 
 au BufRead,BufNewFile *.js set filetype=javascript
 au FileType javascript setlocal et ts=2 sw=2 sts=0
