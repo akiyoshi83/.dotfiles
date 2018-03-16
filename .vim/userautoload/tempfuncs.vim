@@ -17,7 +17,7 @@ function! g:Paste_chat()
   let lines = split(@*, "\n")
   let results = []
   for line in lines
-    let text = substitute(line, '\(.*\) \(\d\d:\d\d:\d\d\)$', '\2 \1', 'g')
+    let text = substitute(line, '\(.*\) \(\d\d\?:\d\d:\d\d ..\)$', '\2 \1', 'g')
     let text = substitute(text, '\s\+$', '', 'g')
     call add(results, text)
   endfor
