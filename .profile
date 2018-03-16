@@ -37,6 +37,7 @@ function repos {
 }
 
 # environment
+export PATH=$PATH:$HOME/.dotfiles/bin
 if [ -e $HOME/.dotfiles/.profile.env ]; then
   source $HOME/.dotfiles/.profile.env
 fi
