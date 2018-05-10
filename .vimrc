@@ -195,6 +195,7 @@ let QFixHowm_FileType = 'markdown'
 let QFixHowm_Title = '#'
 let QFixWin_EnableMode = 1
 let QFix_UseLocationList = 1
+let QFixHowm_SaveTime = -1
 "}}}
 "
 
