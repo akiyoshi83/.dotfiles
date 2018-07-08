@@ -200,6 +200,10 @@ vpc-list() {
 subnet-list() {
   aws ec2 describe-subnets --query "Subnets[].[Tag[?Key==Name].Value,VpcId,SubnetId,CidrBlock]" --output text ${@}
 }
+default-security-group() {
+  #awless list securitygroups | grep vpc-d997fcbc | grep "default VPC security group"
+  aws ec2 describe-security-groups --filter "Name=description,Values='default VPC security group'" --query SecurityGroups[].[VpcId,GroupId,GroupName,Description] --output text
+}
 
 allow-me-ssh() {
   local vpcid=$1
