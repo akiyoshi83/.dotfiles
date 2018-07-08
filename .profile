@@ -85,6 +85,13 @@ if [ `which exenv` ]; then
   eval "$(exenv init -)"
 fi
 
+# now with timezone
+now() {
+  tzs=(UTC America/Los_Angeles Asia/Tokyo Africa/Cairo Australia/Sydney Europe/Berlin)
+  for tz in ${tzs[@]}; do
+    TZ=$tz date "+%Y-%m-%dT%H:%M %Z"
+  done
+}
 
 # docker
 #export DOCKER_CONTENT_TRUST=1
