@@ -239,11 +239,6 @@ allow-me-rdp() {
   echo "$sgid : ${gip}/32"
 }
 
-region() {
-  local new_region=$1
-  sed -ie "s/region = \(.*\)/region = ${new_region}/g" ~/.aws/config
-}
-
 cfn-new() {
   cat <<EOS
 AWSTemplateFormatVersion: 2010-09-09
@@ -253,4 +248,34 @@ Mappings: {}
 Resources: {}
 Outputs: {}
 EOS
+}
+
+aws-profile() {
+  echo $AWS_PROFILE
+}
+
+change-aws-profile() {
+  if [ "$1" == "" ]; then
+    local profile=$(cat ~/.aws/config | grep "\[profile" | sed -e "s/\[profile //" | sed -e "s/]$//" | peco)
+    export AWS_PROFILE=$profile
+  else
+    export AWS_PROFILE=$1
+  fi
+}
+
+regions() {
+  aws ec2 describe-regions --region ap-northeast-1 --query "Regions[].RegionName" --output text | sed -e s/$'\t'/$'\\\n'/g
+}
+
+region() {
+  echo $AWS_DEFAULT_REGION
+}
+
+change-region() {
+  if [ "$1" == "" ]; then
+    local reg=$(regions | peco)
+    export AWS_DEFAULT_REGION=$reg
+  else
+    export AWS_DEFAULT_REGION=$1
+  fi
 }
