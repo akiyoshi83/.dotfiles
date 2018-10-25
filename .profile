@@ -298,5 +298,13 @@ make_bash_stat() {
 }
 
 PROMPT_COMMAND='make_bash_stat'
-#export PS1='\h:\W \u\$ '
-export PS1='\h:\W \u $bash_stat\n\$ '
+
+simplify_prompt() {
+  #export PS1='\h:\W \u\$ '
+  export PS1='$ '
+}
+
+reset_prompt() {
+  export PS1='\h:\W \u $bash_stat\n\$ '
+}
+reset_prompt
