@@ -251,7 +251,11 @@ EOS
 }
 
 aws-profile() {
-  echo $AWS_PROFILE
+  if [ "$AWS_PROFILE" == "" ]; then
+    echo "default"
+  else
+    echo $AWS_PROFILE
+  fi
 }
 
 change-aws-profile() {
@@ -268,7 +272,11 @@ regions() {
 }
 
 region() {
-  echo $AWS_DEFAULT_REGION
+  if [ "$AWS_DEFAULT_REGION" == "" ]; then
+    cat ~/.aws/config | grep "\[default\]" -A5 | grep region | sed -e 's/.* = \(.*\)/\1/'
+  else
+    echo $AWS_DEFAULT_REGION
+  fi
 }
 
 change-region() {
@@ -279,3 +287,16 @@ change-region() {
     export AWS_DEFAULT_REGION=$1
   fi
 }
+
+make_bash_stat() {
+  local profile=$(aws-profile)
+  local region=$(region)
+  if [ "$profile" == "" -a "$region" == "" ]; then
+    export bash_stat=""
+  fi
+  export bash_stat="AWS > $profile > $region"
+}
+
+PROMPT_COMMAND='make_bash_stat'
+#export PS1='\h:\W \u\$ '
+export PS1='\h:\W \u $bash_stat\n\$ '
