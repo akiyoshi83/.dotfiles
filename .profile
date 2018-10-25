@@ -239,6 +239,28 @@ allow-me-rdp() {
   echo "$sgid : ${gip}/32"
 }
 
+allow-port() {
+  local port=$1
+  if [ "$port" == "" ]; then
+    echo port is required
+    exit 1
+  fi
+  local vpcid=$2
+  local gip=$(curl -s http://checkip.amazonaws.com/ | tr -d "\r\n")
+  if [ "$vpcid" == "" ]; then
+    local vpcid=$(aws ec2 describe-vpcs --filter "Name=isDefault,Values=true" --query "Vpcs[0].VpcId" --output text)
+  fi
+  local sgid=$(aws ec2 describe-security-groups --filter "Name=vpc-id,Values=$vpcid,Name=group-name,Values=temp-ssh" --query "SecurityGroups[].GroupId" --output text)
+  if [ "$sgid" == "" ]; then
+    local sgid=$(aws ec2 create-security-group --vpc-id $vpcid --group-name temp-ssh --description "Temporary ssh security group" --query "GroupId" --output text)
+  fi
+  for cidr in $(aws ec2 describe-security-groups --filter "Name=group-id,Values=$sgid" --query "SecurityGroups[].IpPermissions[].IpRanges[].CidrIp" --output text); do
+    aws ec2 revoke-security-group-ingress --group-id $sgid --protocol tcp --port $port --cidr $cidr
+  done
+  aws ec2 authorize-security-group-ingress --group-id $sgid --protocol tcp --port $port --cidr "${gip}/32"
+  echo "$sgid : ${gip}/32 port: $port"
+}
+
 cfn-new() {
   cat <<EOS
 AWSTemplateFormatVersion: 2010-09-09
