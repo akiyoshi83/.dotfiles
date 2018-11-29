@@ -31,6 +31,11 @@ alias sortnr='sort -n -r'
 
 alias pserv="python -m SimpleHTTPServer"
 
+function has {
+  which $1 > /dev/null 2>&1
+  return $?
+}
+
 function repos {
     local dir="$( ghq list -p | peco )"
     if [ ! -z "$dir" ] ; then
@@ -44,20 +49,20 @@ if [ -e $HOME/.dotfiles/.profile.env ]; then
   source $HOME/.dotfiles/.profile.env
 fi
 
-if [ `which vim` ]; then
+if [ `has vim` ]; then
   export EDITOR=`which vim`
 fi
 
-if [ `which go` ]; then
+if [ `has go` ]; then
   export GOPATH=$HOME
   export PATH=$PATH:$GOPATH/bin
 fi
 
-if [ `which rbenv` ]; then
+if [ `has rbenv` ]; then
   eval "$(rbenv init -)"
 fi
 
-if [ `which pyenv` ]; then
+if [ `has pyenv` ]; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
@@ -77,10 +82,12 @@ export PATH=$JAVA_HOME/bin:$PATH
 export STUDIO_JDK=${JAVA_HOME7%/*/*}
 
 # direnv
-eval "$(direnv hook bash)"
+if [ `has direnv` ]; then
+  eval "$(direnv hook bash)"
+fi
 
 # exenv
-if [ `which exenv` ]; then
+if [ `has exenv` ]; then
   export PATH="$HOME/.exenv/bin:$PATH"
   eval "$(exenv init -)"
 fi
@@ -294,7 +301,7 @@ regions() {
 }
 
 region() {
-  if [ "$AWS_DEFAULT_REGION" == "" ]; then
+  if [ "$AWS_DEFAULT_REGION" == "" -a -f ~/.aws/config ]; then
     cat ~/.aws/config | grep "\[default\]" -A5 | grep region | sed -e 's/.* = \(.*\)/\1/'
   else
     echo $AWS_DEFAULT_REGION
