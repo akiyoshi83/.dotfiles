@@ -132,6 +132,7 @@ Plug 'fatih/vim-go'
 Plug 'fuenor/qfixhowm'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
+Plug 'kovisoft/slimv'
 Plug 'plasticboy/vim-markdown'
 Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
@@ -197,7 +198,14 @@ let QFixWin_EnableMode = 1
 let QFix_UseLocationList = 1
 let QFixHowm_SaveTime = -1
 "}}}
-"
+
+" slimv
+if has("mac")
+  let g:slimv_swank_cmd = '!osascript -e "tell application \"Terminal\" to do script \"ros run --load ~/.vim/plugged/slimv/slime/start-swank.lisp\""'
+endif
+let g:slimv_repl_simple_eval = 0
+let g:slimv_repl_split = 2
+let g:slimv_repl_split_size = 20
 
 " filetype {{{
 au BufRead,BufNewFile *.rb set filetype=ruby
