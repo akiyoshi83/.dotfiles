@@ -41,7 +41,8 @@ nnoremap ; :
 set hidden
 
 " クリップボード設定
-set clipboard=unnamed " unnamed register = *
+set clipboard&
+set clipboard^=unnamedplus,unnamed
 
 " モードラインの検索行数を設定
 set modelines=5
