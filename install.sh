@@ -21,8 +21,13 @@ ln -s ~/.dotfiles/.vimrc ~/
 ln -s ~/.dotfiles/.vim   ~/
 mkdir -p ~/.vim/tmp
 
+# neivim
+mkdir -p ~/.config/nvim
+ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
+
 # vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # tmux
 ln -s ~/.dotfiles/.tmux.conf ~/

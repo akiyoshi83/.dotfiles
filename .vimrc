@@ -1,5 +1,11 @@
 " vim:set et ts=2 sw=2 sts=2 ft=vim:
 
+if has('nvim')
+  let plugin_path = '~/.local/share/nvim/plugged'
+else
+  let plugin_path = '~/.vim/plugged'
+endif
+
 " 基本的な見た目
 syntax on
 set nonumber
@@ -127,7 +133,7 @@ let g:netrw_alto = 1
 "}}}
 
 " vim-plug
-call plug#begin('~/.vim/plugged')
+call plug#begin(plugin_path)
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
 Plug 'fuenor/qfixhowm'
