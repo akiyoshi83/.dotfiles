@@ -33,7 +33,6 @@ alias pserv="python -m SimpleHTTPServer"
 
 function has {
   which $1 > /dev/null 2>&1
-  return $?
 }
 
 function repos {
@@ -49,20 +48,21 @@ if [ -e $HOME/.dotfiles/.profile.env ]; then
   source $HOME/.dotfiles/.profile.env
 fi
 
-if [ `has vim` ]; then
+if has vim; then
   export EDITOR=`which vim`
 fi
 
-if [ `has go` ]; then
+if has go; then
+  echo hoge
   export GOPATH=$HOME
   export PATH=$PATH:$GOPATH/bin
 fi
 
-if [ `has rbenv` ]; then
+if has rbenv; then
   eval "$(rbenv init -)"
 fi
 
-if [ `has pyenv` ]; then
+if has pyenv; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
@@ -82,12 +82,12 @@ export PATH=$JAVA_HOME/bin:$PATH
 export STUDIO_JDK=${JAVA_HOME7%/*/*}
 
 # direnv
-if [ `has direnv` ]; then
+if has direnv; then
   eval "$(direnv hook bash)"
 fi
 
 # exenv
-if [ `has exenv` ]; then
+if has exenv; then
   export PATH="$HOME/.exenv/bin:$PATH"
   eval "$(exenv init -)"
 fi
