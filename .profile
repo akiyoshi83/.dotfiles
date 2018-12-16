@@ -53,7 +53,6 @@ if has vim; then
 fi
 
 if has go; then
-  echo hoge
   export GOPATH=$HOME
   export PATH=$PATH:$GOPATH/bin
 fi
