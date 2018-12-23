@@ -54,7 +54,6 @@ Session.vim
 .netrwhist
 *~
 .vim/bundle/*
-.vim/userautoload/private_*
 
 
 # emacs
@@ -108,4 +107,6 @@ TAGS
 .vim/tmp
 .vim/autoload/plug.vim
 .vim/plugged/
+.vim/userautoload/private_*
+.vim/init.vim
 

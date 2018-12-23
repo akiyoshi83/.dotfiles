@@ -22,7 +22,7 @@ ln -s ~/.dotfiles/.vim   ~/
 mkdir -p ~/.vim/tmp
 
 # neivim
-mkdir -p ~/.config/nvim
+ln -s ~/.dotfiles/.vim ~/.config/nvim
 ln -s ~/.dotfiles/.vimrc ~/.config/nvim/init.vim
 
 # vim-plug
