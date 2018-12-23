@@ -54,6 +54,7 @@ Session.vim
 .netrwhist
 *~
 .vim/bundle/*
+.vim/userautoload/private_*
 
 
 # emacs
