@@ -17,14 +17,6 @@ set laststatus=2 "always
 set showtabline=2 " always
 set statusline=[%{&fileencoding}][\%{&fileformat}]\ %F%m%r%=<%c:%l>
 
-" カラースキーム
-"" 暗めでも見やすいが透過ではない
-"colorscheme industry
-"colorscheme murphy
-"colorscheme torte
-"" 暗めでもそこそこ見やすく透過
-colorscheme ron
-
 " 字下げ、改行をバックスペースで削除
 set backspace=indent,eol,start
 
@@ -144,10 +136,13 @@ let g:netrw_alto = 1
 call plug#begin(plugin_path)
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
+Plug 'felixhummel/setcolors.vim'
+Plug 'flazz/vim-colorschemes'
 Plug 'fuenor/qfixhowm'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
 Plug 'kovisoft/slimv'
+Plug 'micha/vim-colors-solarized'
 Plug 'plasticboy/vim-markdown'
 Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
@@ -156,6 +151,17 @@ if executable('ctags')
     Plug 'vim-scripts/taglist.vim'
 endif
 call plug#end()
+
+" カラースキーム
+"" 暗めでも見やすいが透過ではない
+"colorscheme industry
+"colorscheme murphy
+"colorscheme torte
+"" 暗めでもそこそこ見やすく透過
+"colorscheme ron
+"set background=dark
+"colorscheme solarized
+colorscheme BlackSea
 
 " taglist.vim
 " http://www.vim.org/scripts/script.php?script_id=273
