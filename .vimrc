@@ -17,6 +17,14 @@ set laststatus=2 "always
 set showtabline=2 " always
 set statusline=[%{&fileencoding}][\%{&fileformat}]\ %F%m%r%=<%c:%l>
 
+" カラースキーム
+"" 暗めでも見やすいが透過ではない
+"colorscheme industry
+"colorscheme murphy
+"colorscheme torte
+"" 暗めでもそこそこ見やすく透過
+colorscheme ron
+
 " 字下げ、改行をバックスペースで削除
 set backspace=indent,eol,start
 
