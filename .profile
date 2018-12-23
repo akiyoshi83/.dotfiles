@@ -9,9 +9,10 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-alias l='ls -lFh'     #size,show type,human readable
-alias la='ls -lAFh'   #long list,show almost all,show type,human readable
-alias ll='ls -l'      #long list
+alias ls='ls -FG'
+alias l='ls -lFGh'
+alias la='ls -lAFG'
+alias ll='ls -lFG'
 alias ldot='ls -ld .*'
 
 alias grep='grep --color'
