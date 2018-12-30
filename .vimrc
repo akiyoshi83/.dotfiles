@@ -144,9 +144,11 @@ Plug 'kien/ctrlp.vim'
 Plug 'kovisoft/slimv'
 Plug 'micha/vim-colors-solarized'
 Plug 'plasticboy/vim-markdown'
+Plug 'racer-rust/vim-racer'
 Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
+Plug 'vim-syntastic/syntastic'
 if executable('ctags')
     Plug 'vim-scripts/taglist.vim'
 endif
@@ -228,6 +230,9 @@ let g:slimv_repl_simple_eval = 0
 let g:slimv_repl_split = 2
 let g:slimv_repl_split_size = 20
 
+" rust.vim
+let g:rustfmt_autosave = 1
+
 " filetype {{{
 au BufRead,BufNewFile *.rb set filetype=ruby
 au BufRead,BufNewFile Gemfile set filetype=ruby
@@ -266,5 +271,16 @@ au FileType yaml setlocal expandtab ts=2 sw=2 fenc=utf-8
 au BufRead,BufNewFile *.json set filetype=json
 au FileType json setlocal et ts=2 sw=2 sts=0
 " }}}
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_rust_checkers = ['cargo']
 
 runtime! userautoload/*.vim
