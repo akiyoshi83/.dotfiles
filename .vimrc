@@ -135,7 +135,6 @@ let g:netrw_alto = 1
 " vim-plug
 call plug#begin(plugin_path)
 Plug 'elzr/vim-json'
-Plug 'fatih/vim-go'
 Plug 'felixhummel/setcolors.vim'
 Plug 'flazz/vim-colorschemes'
 Plug 'fuenor/qfixhowm'
@@ -143,12 +142,18 @@ Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
 Plug 'kovisoft/slimv'
 Plug 'micha/vim-colors-solarized'
+Plug 'natebosch/vim-lsc'
 Plug 'plasticboy/vim-markdown'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'racer-rust/vim-racer'
 Plug 'rking/ag.vim'
 Plug 'rust-lang/rust.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'vim-syntastic/syntastic'
+let g:lsp_async_completion = 1
 if executable('ctags')
     Plug 'vim-scripts/taglist.vim'
 endif
@@ -178,11 +183,19 @@ nnoremap <C-l> :NERDTree<CR>
 
 " golang {{{
 " -----------
-" go get github.com/nsf/gocode
-if isdirectory('$HOME/src/github.com/nsf/gocode/vim')
-  exe "set runtimepath+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-  set completeopt=menu,preview
-endif
+" https://github.com/golang/go/wiki/gopls#vim--neovim
+augroup LspGo
+  au!
+  autocmd User lsp_setup call lsp#register_server({
+      \ 'name': 'go-lang',
+      \ 'cmd': {server_info->['gopls']},
+      \ 'whitelist': ['go'],
+      \ })
+  autocmd FileType go setlocal omnifunc=lsp#complete
+  autocmd FileType go nmap <buffer> gd <plug>(lsp-definition)
+  autocmd FileType go nmap <buffer> ,n <plug>(lsp-next-error)
+  autocmd FileType go nmap <buffer> ,p <plug>(lsp-previous-error)
+augroup END
 "}}}
 
 " ctrlp
