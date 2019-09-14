@@ -32,6 +32,8 @@ alias sortnr='sort -n -r'
 
 alias pserv="python -m SimpleHTTPServer"
 
+alias godoc="godoc -http=localhost:6060 -analysis type -play"
+
 function has {
   which $1 > /dev/null 2>&1
 }
