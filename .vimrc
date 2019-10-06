@@ -1,5 +1,9 @@
 " vim:set et ts=2 sw=2 sts=2 ft=vim:
 
+if has('win32') || has ('win64')
+  set runtimepath+=~/.vim,~/.vim/after
+endif
+
 if has('nvim')
   let plugin_path = '~/.local/share/nvim/plugged'
 else
