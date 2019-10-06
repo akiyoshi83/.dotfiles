@@ -27,3 +27,7 @@ $vimPlugUrl = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.v
 (New-Object net.webclient).DownloadFile($vimPlugUrl, "$HOME\.vim\autoload\plug.vim")
 New-Item -ItemType Directory $HOME\.local\share\nvim\site\autoload
 (new-object net.webclient).DownloadFile($vimPlugUrl, "$HOME\.local\share\nvim\site\autoload\plug.vim")
+
+# Keyhac
+New-Item -ItemType Directory $HOME\AppData\Roaming\Keyhac
+New-Item -ItemType hardlink -Path $HOME\AppData\Roaming\Keyhac -Name config.py -Value $HOME\.dotfiles\Keyhac\config.py
