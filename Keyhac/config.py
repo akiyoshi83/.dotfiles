@@ -92,6 +92,10 @@ def configure(keymap):
         _keymap[ "U0-Right"] = "End"            # Select to end of line
         _keymap[ "U0-S-Left"] = "S-Home"        # Select to beginning of line
         _keymap[ "U0-S-Right"] = "S-End"        # Select to end of line
+        _keymap[ "U0-B" ] = withC("C-B")        # Bold
+        _keymap[ "U0-I" ] = withC("C-I")        # Italic
+        _keymap[ "U0-I" ] = withC("C-U")        # Underline
+        _keymap[ "U0-I" ] = withC("C-T")        # Strikethrough
 
     def set_terminal_keymap(_keymap):
         _keymap[ "C-D" ] = "Delete"              # Delete
