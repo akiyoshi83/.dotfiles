@@ -1,12 +1,11 @@
-﻿# Keyhac で Windows のキーバインドを Mac の英語キーボードに近づける。
-# 前提条件: KeySwap などで CapsLock と LCtrl が変更済みであること。
+# Keyhac で Windows のキーバインドを Mac の英語キーボードに近づける。
+# 前提条件: KeySwap などで CapsLock と RCtrl が変更済みであること。
 # 主な変更点:
 # - LAlt => 無変換 (LUser0)
 # - RAlt => 変換 (RUser0)
 # - LWindows => LAlt
 # - RWindows => RAlt
 # - LCtrl => LWindows
-# - CapsLock(元LCtrl) => LWindows
 import sys
 import os
 import datetime
@@ -32,7 +31,7 @@ def configure(keymap):
 
     # --------------------------------------------------------------------
     # Replace keys
-    keymap.replaceKey("CapsLock", "LWin")
+    keymap.replaceKey("LCtrl", "LWin")
     keymap.replaceKey("LWin", "LAlt")
     keymap.replaceKey("RWin", "RAlt")
 
