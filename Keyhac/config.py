@@ -1,4 +1,4 @@
-# Keyhac で Windows のキーバインドを Mac の英語キーボードに近づける。
+﻿# Keyhac で Windows のキーバインドを Mac の英語キーボードに近づける。
 # 前提条件: KeySwap などで CapsLock と RCtrl が変更済みであること。
 # 主な変更点:
 # - LAlt => 無変換 (LUser0)
@@ -46,11 +46,13 @@ def configure(keymap):
     # Global keymap
     keymap_global = keymap.defineWindowKeymap()
 
+    withC = lambda x: (x, "D-Ctrl", "U-Ctrl")
+
     keymap_global["U0-Ctrl-R"] = keymap.command_ReloadConfig
     keymap_global["U0-Ctrl-E"] = keymap.command_EditConfig
 
-    keymap_global["U0-S-CloseBracket"]  = "C-Tab"
-    keymap_global["U0-S-OpenBracket"]  = "C-S-Tab"
+    keymap_global["U0-S-CloseBracket"]  = withC("C-Tab")
+    keymap_global["U0-S-OpenBracket"]  = withC("C-S-Tab")
     keymap_global["U0-Tab"] = "A-Tab"
     keymap_global["U0-S-Tab"] = "A-S-Tab"
 
@@ -86,8 +88,8 @@ def configure(keymap):
         _keymap[ "C-B" ] = "Left"               # Move cursor left
         _keymap[ "C-A" ] = "Home"               # Move to beginning of line
         _keymap[ "C-E" ] = "End"                # Move to end of line
-        _keymap[ "A-F" ] = "C-Right"            # Word right
-        _keymap[ "A-B" ] = "C-Left"             # Word left
+        _keymap[ "A-F" ] = withC("C-Right")     # Word right
+        _keymap[ "A-B" ] = withC("C-Left")      # Word left
         _keymap[ "U0-Left"] = "Home"            # Select to beginning of line
         _keymap[ "U0-Right"] = "End"            # Select to end of line
         _keymap[ "U0-S-Left"] = "S-Home"        # Select to beginning of line
@@ -107,7 +109,7 @@ def configure(keymap):
         _keymap[ "C-B" ] = "Left"                # Move cursor left
         _keymap[ "C-A" ] = "Home"                # Move to beginning of line
         _keymap[ "C-E" ] = "End"                 # Move to end of line
-        _keymap[ "C-W" ] = "C-Back"              # Backspace a word
+        _keymap[ "C-W" ] = withC("C-Back")       # Backspace a word
 
     if 1:
         set_editor_keymap(keymap.defineWindowKeymap( class_name="Edit" ))
@@ -117,3 +119,4 @@ def configure(keymap):
         #set_terminal_keymap(keymap.defineWindowKeymap( class_name="ConsoleWindowClass" ))
         #set_terminal_keymap(keymap.defineWindowKeymap( class_name="VirtualConsoleClass" ))
         #set_terminal_keymap(keymap.defineWindowKeymap( class_name="mintty" ))
+    
