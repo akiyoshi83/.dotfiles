@@ -66,7 +66,7 @@ def configure(keymap):
     keymap_global["O-28"] = ime_on
 
     # --------------------------------------------------------------------
-    # Keymap for ditable area
+    # Keymap for editable area
     def set_editor_keymap(_keymap):
         _keymap[ "U0-A" ] = "Ctrl-A"            # Select all
         _keymap[ "U0-C" ] = "Ctrl-C"            # Copy
