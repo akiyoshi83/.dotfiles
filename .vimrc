@@ -141,7 +141,6 @@ call plug#begin(plugin_path)
 Plug 'elzr/vim-json'
 Plug 'felixhummel/setcolors.vim'
 Plug 'flazz/vim-colorschemes'
-Plug 'fuenor/qfixhowm'
 Plug 'godlygeek/tabular'
 Plug 'kien/ctrlp.vim'
 Plug 'kovisoft/slimv'
@@ -207,37 +206,6 @@ if executable('ag')
   let g:ctrlp_use_caching=0
   let g:ctrlp_user_command='ag %s -i --nocolor --nogroup -g ""'
 endif
-
-" QFixHowm {{{
-function! g:Memo_dir()
-  let dir = $HOME . "/Documents/memo"
-  if $MEMODIR != ""
-    let dir = $MEMODIR
-  endif
-  if !isdirectory(dir)
-      call mkdir(dir, "p")
-  endif
-  return dir
-endfunction
-
-function! g:Memo_cd()
-  let dir = Memo_dir()
-  exe 'cd' dir
-  NERDTree
-endfunction
-
-nnoremap <silent> <Space>mc  :<C-u>call Memo_cd()<CR>
-
-let QFixHowm_Key = '<Space>'
-let QFixHowm_KeyB = ''
-let howm_dir = Memo_dir()
-let howm_filename = '%Y/%m/%Y-%m-%d-%H%M%S.md'
-let QFixHowm_FileType = 'markdown'
-let QFixHowm_Title = '#'
-let QFixWin_EnableMode = 1
-let QFix_UseLocationList = 1
-let QFixHowm_SaveTime = -1
-"}}}
 
 " slimv
 if has("mac")
