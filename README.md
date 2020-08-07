@@ -6,10 +6,12 @@ My dot files.
 install
 -------
 
+### Linux / Mac
+
 ```sh
 curl https://raw.githubusercontent.com/akiyoshi83/.dotfiles/master/install.sh | bash
-
-# if use golang
-# see https://github.com/nsf/gocode#vim-setup
 ```
 
+### Windows
+
+TBD.
