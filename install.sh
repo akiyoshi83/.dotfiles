@@ -5,7 +5,14 @@ fi
 
 cd ~
 git clone https://github.com/akiyoshi83/.dotfiles.git
-echo "source \$HOME/.dotfiles/.profile" >> ~/.bashrc
+
+if [ "$SHELL" = "/bin/zsh" ]; then
+    echo "source \$HOME/.dotfiles/shell/.zprofile" >> ~/.zprofile
+    echo "source \$HOME/.dotfiles/shell/.zshrc" >> ~/.zshrc
+else
+    echo "source \$HOME/.dotfiles/shell/.bash_profile" >> ~/.bash_profile
+    echo "source \$HOME/.dotfiles/shell/.bashrc" >> ~/.bashrc
+fi
 
 # gem
 ln -s ~/.dotfiles/.gemrc ~/
