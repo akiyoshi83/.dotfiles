@@ -1,0 +1,34 @@
+# vim:set et ts=2 sw=2 sts=2 ft=sh:
+
+# alias
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+alias ls='ls -FG'
+alias l='ls -lFGh'
+alias la='ls -lAFG'
+alias ll='ls -lFG'
+alias ldot='ls -ld .*'
+
+alias grep='grep --color'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+alias t='tail -f'
+
+alias dud='du -d 1 -h'
+alias duf='du -sh *'
+alias fd='find . -type d -name'
+alias ff='find . -type f -name'
+
+alias h='history'
+alias hgrep="fc -El 0 | grep"
+alias p='ps -f'
+alias sortnr='sort -n -r'
+
+alias pserv="python -m SimpleHTTPServer"
+
+alias godoc="godoc -http=localhost:6060 -analysis type -play"
+
+source $CURRENT/docker
+source $CURRENT/aws
