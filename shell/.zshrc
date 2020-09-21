@@ -7,3 +7,4 @@ autoload -U compinit promptinit
 compinit
 promptinit
 prompt walters
+bindkey -e
