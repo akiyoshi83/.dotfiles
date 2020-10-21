@@ -53,6 +53,14 @@ ec2ssh() {
   ssh -l "$user" $(echo -n $selected | awk '{print $1}')
 }
 
+ec2list() {
+  aws ec2 describe-instances \
+    --filter "Name=instance-state-name,Values=running" \
+    --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
+    --output text \
+    ${@}
+}
+
 default-vpc() {
   aws ec2 describe-vpcs --filter Name=is-default,Values=true --query "Vpcs[].{VpcId:VpcId,CidrBlock:CidrBlock}" --output text
 }
