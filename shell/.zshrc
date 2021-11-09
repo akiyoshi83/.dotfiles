@@ -53,5 +53,5 @@ setopt inc_append_history
 function history-all { history -E 1 }
 
 # インクリメンタルからの検索
-bindkey "^R" history-incremental-search-backward%
+#bindkey "^R" history-incremental-search-backward%
 

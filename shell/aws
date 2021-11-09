@@ -1,6 +1,6 @@
 # vim:set et ts=2 sw=2 sts=2 ft=sh:
 
-alias aws='docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli'
+#alias aws='docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli'
 
 amazon-linux() {
   cond=$1
@@ -8,6 +8,7 @@ amazon-linux() {
   line=$(aws ec2 describe-images \
     --output json \
     --owner amazon \
+    --no-cli-pager \
     --filter "Name=name,Values=amzn-ami-*${cond}*" \
     | jq  -c ".Images[] | [.ImageId, .VirtualizationType, .RootDeviceType, .Name, .Description]" \
     | sed -e s/,/$'\t'/g \
@@ -43,8 +44,9 @@ cf-active-stacks() {
 # ec2ssh --region REGION_NAME --profile PROFILE_NAME
 ec2ssh() {
   user=${1:-'ec2-user'}
-  shift
+  #shift
   selected=$(aws ec2 describe-instances \
+    --no-cli-pager \
     --filter "Name=instance-state-name,Values=running" \
     --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
     --output text \
@@ -55,6 +57,7 @@ ec2ssh() {
 
 ec2list() {
   aws ec2 describe-instances \
+    --no-cli-pager \
     --filter "Name=instance-state-name,Values=running" \
     --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
     --output text \
@@ -80,11 +83,11 @@ default-security-group() {
 allow-me-ssh() {
   local vpcid=$1
   local gip=$(curl -s http://checkip.amazonaws.com/ | tr -d "\r\n")
-  if [ "$vpcid" == "" ]; then
+  if [ "$vpcid" = "" ]; then
     local vpcid=$(aws ec2 describe-vpcs --filter "Name=isDefault,Values=true" --query "Vpcs[0].VpcId" --output text)
   fi
   local sgid=$(aws ec2 describe-security-groups --filter "Name=vpc-id,Values=$vpcid,Name=group-name,Values=temp-ssh" --query "SecurityGroups[].GroupId" --output text)
-  if [ "$sgid" == "" ]; then
+  if [ "$sgid" = "" ]; then
     local sgid=$(aws ec2 create-security-group --vpc-id $vpcid --group-name temp-ssh --description "Temporary ssh security group" --query "GroupId" --output text)
   fi
   for cidr in $(aws ec2 describe-security-groups --filter "Name=group-id,Values=$sgid" --query "SecurityGroups[].IpPermissions[].IpRanges[].CidrIp" --output text); do
@@ -97,11 +100,11 @@ allow-me-ssh() {
 allow-me-rdp() {
   local vpcid=$1
   local gip=$(curl -s http://checkip.amazonaws.com/ | tr -d "\r\n")
-  if [ "$vpcid" == "" ]; then
+  if [ "$vpcid" = "" ]; then
     local vpcid=$(aws ec2 describe-vpcs --filter "Name=isDefault,Values=true" --query "Vpcs[0].VpcId" --output text)
   fi
   local sgid=$(aws ec2 describe-security-groups --filter "Name=vpc-id,Values=$vpcid,Name=group-name,Values=temp-rdp" --query "SecurityGroups[].GroupId" --output text)
-  if [ "$sgid" == "" ]; then
+  if [ "$sgid" = "" ]; then
     local sgid=$(aws ec2 create-security-group --vpc-id $vpcid --group-name temp-rdp --description "Temporary rdp security group" --query "GroupId" --output text)
   fi
   for cidr in $(aws ec2 describe-security-groups --filter "Name=group-id,Values=$sgid" --query "SecurityGroups[].IpPermissions[].IpRanges[].CidrIp" --output text); do
@@ -113,17 +116,17 @@ allow-me-rdp() {
 
 allow-port() {
   local port=$1
-  if [ "$port" == "" ]; then
+  if [ "$port" = "" ]; then
     echo port is required
     exit 1
   fi
   local vpcid=$2
   local gip=$(curl -s http://checkip.amazonaws.com/ | tr -d "\r\n")
-  if [ "$vpcid" == "" ]; then
+  if [ "$vpcid" = "" ]; then
     local vpcid=$(aws ec2 describe-vpcs --filter "Name=isDefault,Values=true" --query "Vpcs[0].VpcId" --output text)
   fi
   local sgid=$(aws ec2 describe-security-groups --filter "Name=vpc-id,Values=$vpcid,Name=group-name,Values=temp-ssh" --query "SecurityGroups[].GroupId" --output text)
-  if [ "$sgid" == "" ]; then
+  if [ "$sgid" = "" ]; then
     local sgid=$(aws ec2 create-security-group --vpc-id $vpcid --group-name temp-ssh --description "Temporary ssh security group" --query "GroupId" --output text)
   fi
   for cidr in $(aws ec2 describe-security-groups --filter "Name=group-id,Values=$sgid" --query "SecurityGroups[].IpPermissions[].IpRanges[].CidrIp" --output text); do
@@ -145,28 +148,30 @@ EOS
 }
 
 aws-profile() {
-  if [ "$AWS_PROFILE" == "" ]; then
+  if [ "$AWS_DEFAULT_PROFILE" = "" ]; then
     echo "default"
   else
-    echo $AWS_PROFILE
+    echo $AWS_DEFAULT_PROFILE
   fi
+  aws sts get-caller-identity
 }
 
 change-aws-profile() {
-  if [ "$1" == "" ]; then
+  if [ "$1" = "" ]; then
     local profile=$(cat ~/.aws/config | grep "\[profile" | sed -e "s/\[profile //" | sed -e "s/]$//" | peco)
-    export AWS_PROFILE=$profile
+    export AWS_DEFAULT_PROFILE=$profile
   else
-    export AWS_PROFILE=$1
+    export AWS_DEFAULT_PROFILE=$1
   fi
 }
 
 regions() {
-  aws ec2 describe-regions --region ap-northeast-1 --query "Regions[].RegionName" --output text | sed -e s/$'\t'/$'\\\n'/g
+  #aws ec2 describe-regions --region ap-northeast-1 --query "Regions[].RegionName" --output text | sed -e s/$'\t'/$'\\\n'/g
+  aws ec2 describe-regions --region ap-northeast-1 --query "Regions[].RegionName" --output text | sed -e s/\s+/\\n/g
 }
 
 region() {
-  if [ "$AWS_DEFAULT_REGION" == "" -a -f ~/.aws/config ]; then
+  if [ "$AWS_DEFAULT_REGION" = "" -a -f ~/.aws/config ]; then
     cat ~/.aws/config | grep "\[default\]" -A5 | grep region | sed -e 's/.* = \(.*\)/\1/'
   else
     echo $AWS_DEFAULT_REGION
@@ -174,7 +179,7 @@ region() {
 }
 
 change-region() {
-  if [ "$1" == "" ]; then
+  if [ "$1" = "" ]; then
     local reg=$(regions | peco)
     export AWS_DEFAULT_REGION=$reg
   else
