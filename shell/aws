@@ -153,7 +153,6 @@ aws-profile() {
   else
     echo $AWS_DEFAULT_PROFILE
   fi
-  aws sts get-caller-identity
 }
 
 change-aws-profile() {
