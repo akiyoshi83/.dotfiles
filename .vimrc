@@ -168,10 +168,10 @@ call plug#end()
 "colorscheme murphy
 "colorscheme torte
 "" 暗めでもそこそこ見やすく透過
-"colorscheme ron
+colorscheme ron
 "set background=dark
 "colorscheme solarized
-colorscheme BlackSea
+"colorscheme BlackSea
 
 " taglist.vim
 " http://www.vim.org/scripts/script.php?script_id=273
