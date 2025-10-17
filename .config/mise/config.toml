@@ -1,0 +1,14 @@
+[tools]
+aws-cli = "latest"
+bat = "latest"
+claude = "latest"
+gh = "latest"
+ghq = "latest"
+lazygit = "latest"
+node = "lts"
+prettier = "latest"
+python = "3.13"
+uv = "latest"
+
+[settings]
+idiomatic_version_file_enable_tools = ["python"]
