@@ -3,25 +3,15 @@
 # docker
 #export DOCKER_CONTENT_TRUST=1
 
-docker_eval() {
-  local machine=$1
-  if [ -z $machine ]; then
-    machine=$(docker-machine ls | tail -n +2 | peco | cut -d' ' -f1)
-  fi
-  if [ ! -z $machine ]; then
-    eval $(docker-machine env $machine)
-  fi
-}
-
 docker_rm() {
-  local id=$(docker ps -a | tail -n +2 | peco | sed -E -e 's/ +/ /g' | cut -d' ' -f1)
+  local id=$(docker ps -a | tail -n +2 | fzf | sed -E -e 's/ +/ /g' | cut -d' ' -f1)
   if [ ! -z "$id" ]; then
     docker rm $id
   fi
 }
 
 docker_rmi() {
-  local id=$(docker images | tail -n +2 | peco | sed -E -e 's/ +/ /g' | cut -d' ' -f3)
+  local id=$(docker images | tail -n +2 | fzf | sed -E -e 's/ +/ /g' | cut -d' ' -f3)
   if [ ! -z "$id" ]; then
     docker rmi $id
   fi
@@ -35,7 +25,6 @@ docker_rmi_dangling() {
   docker rmi $(docker images -aqf "dangling=true")
 }
 
-alias dv='docker_eval'
 alias di='docker images'
 alias dp='docker ps'
 alias da='docker ps -a'
@@ -43,4 +32,3 @@ alias dx='docker exec'
 alias dr='docker_rm'
 alias dri='docker_rmi'
 alias dc='docker-compose'
-alias dm='docker-machine'
