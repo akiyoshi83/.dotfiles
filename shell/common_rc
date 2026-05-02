@@ -26,7 +26,7 @@ alias hgrep="fc -El 0 | grep"
 alias p='ps -f'
 alias sortnr='sort -n -r'
 
-alias pserv="python -m SimpleHTTPServer"
+alias pserv="python3 -m http.server"
 
 alias godoc="godoc -http=localhost:6060 -analysis type -play"
 
