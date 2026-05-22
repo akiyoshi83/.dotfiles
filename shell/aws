@@ -13,7 +13,7 @@ amazon-linux() {
     | jq  -c ".Images[] | [.ImageId, .VirtualizationType, .RootDeviceType, .Name, .Description]" \
     | sed -e s/,/$'\t'/g \
     | tr -d '\[\]"' \
-    | peco)
+    | fzf)
   if [ ! -z "${id_only}" ]; then
     echo $line | cut -d' ' -f1
   else
@@ -51,7 +51,7 @@ ec2ssh() {
     --query "Reservations[].Instances[].[PublicIpAddress,Tags[?Key=='Name'].Value | [0], join(',',Tags[?Key!='Name'].Value)]" \
     --output text \
     ${@} \
-    | peco)
+    | fzf)
   ssh -l "$user" $(echo -n $selected | awk '{print $1}')
 }
 
@@ -157,7 +157,7 @@ aws-profile() {
 
 change-aws-profile() {
   if [ "$1" = "" ]; then
-    local profile=$(cat ~/.aws/config | grep "\[profile" | sed -e "s/\[profile //" | sed -e "s/]$//" | peco)
+    local profile=$(cat ~/.aws/config | grep "\[profile" | sed -e "s/\[profile //" | sed -e "s/]$//" | fzf)
     export AWS_DEFAULT_PROFILE=$profile
   else
     export AWS_DEFAULT_PROFILE=$1
@@ -179,7 +179,7 @@ region() {
 
 change-region() {
   if [ "$1" = "" ]; then
-    local reg=$(regions | peco)
+    local reg=$(regions | fzf)
     export AWS_DEFAULT_REGION=$reg
   else
     export AWS_DEFAULT_REGION=$1

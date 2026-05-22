@@ -1,8 +1,8 @@
 #!/bin/bash
 name=$1
-user=akiyoshi
-uid=akiyoshi83
-email=mail@akiyoshi83.info
+user=$(git config --global user.name 2>/dev/null || echo "Your Name")
+uid=$(git config --global github.user 2>/dev/null || echo "$user")
+email=$(git config --global user.email 2>/dev/null || echo "you@example.com")
 year=$(date "+%Y")
 
 mkdir $name && cd $_
@@ -53,23 +53,30 @@ Author
 \`$user <https://github.com/$uid>\`_
 EOS
 
-cat <<EOS > setup.py
-from setuptools import find_packages, setup
+cat <<EOS > pyproject.toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-with open('README.rst') as f:
-    readme = f.read()
+[project]
+name = "$name"
+version = "0.0.1"
+description = ""
+readme = "README.rst"
+license = { file = "LICENSE" }
+authors = [
+  { name = "$user", email = "$email" }
+]
 
-with open('LICENSE') as f:
-    license = f.read()
+[project.urls]
+Repository = "https://github.com/$uid/$name"
 
-setup(
-    name='$name',
-    version='0.0.1',
-    description='',
-    long_description=readme,
-    author='$uid',
-    author_email='$email',
-    url='https://github.com/$uid/$name',
-    license=license,
-    packages=find_packages(exclude=('tests', 'docs'))
-)
+[tool.hatch.build.targets.wheel]
+packages = ["$name"]
+EOS
+
+touch $name/__init__.py
+
+git init
+git add .
+git commit -m "Initial commit"
