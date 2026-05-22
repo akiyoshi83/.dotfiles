@@ -16,6 +16,8 @@ HISTFILE=~/.zsh_history
 export HISTSIZE=1000
 export SAVEHIST=100000
 
+export LESS=FRX
+
 # 重複を記録しない
 setopt hist_ignore_dups
 
@@ -55,3 +57,22 @@ function history-all { history -E 1 }
 # インクリメンタルからの検索
 #bindkey "^R" history-incremental-search-backward%
 
+# mise
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
+# starship
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+# uv
+if command -v uv >/dev/null 2>&1; then
+  eval "$(uv generate-shell-completion zsh)"
+fi
+
+# fzf
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
